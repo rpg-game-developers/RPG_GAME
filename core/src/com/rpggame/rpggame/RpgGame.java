@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.rpggame.rpggame.component.PositionComponent;
 import com.rpggame.rpggame.component.SpriteComponent;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.entity.EntityWorld;
@@ -15,23 +16,22 @@ public class RpgGame extends ApplicationAdapter {
 	private Texture player;
 	private EntityWorld entityWorld;
 	private SpriteBatch batch;
+	private Entity entity;
 
 	@Override
 	public void create () {
 		// load all assets
 		player = new Texture(Gdx.files.internal("alienPink_round.png"));
+		batch = new SpriteBatch();
 
-		// create first entity
+		// create entity world
 		entityWorld = new EntityWorld();
 		entityWorld.addSystem(new RenderingSystem());
 
-		Entity entity = new Entity(entityWorld);
-		batch = new SpriteBatch();
-
-
-		entity.addComponent(new SpriteComponent());
-		SpriteComponent sprite = entity.getComponent(SpriteComponent.class);
-		sprite.setSprite(player);
+		// create first entity
+		entity = new Entity(entityWorld);
+		entity.addComponent(new SpriteComponent(player));
+		entity.addComponent(new PositionComponent(200, 150));
 	}
 
 	@Override

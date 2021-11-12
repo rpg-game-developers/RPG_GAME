@@ -1,6 +1,7 @@
 package com.rpggame.rpggame.system;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.rpggame.rpggame.component.PositionComponent;
 import com.rpggame.rpggame.component.RenderingComponent;
 import com.rpggame.rpggame.entity.Entity;
 
@@ -16,7 +17,8 @@ public class RenderingSystem implements System {
 
     @Override
     public void tryToAddEntity(Entity entity) {
-        if (entity.hasComponent(RenderingComponent.class)) {
+        if (entity.hasComponent(RenderingComponent.class) &&
+            entity.hasComponent(PositionComponent.class)) {
             entities.add(entity);
         }
     }
@@ -24,7 +26,8 @@ public class RenderingSystem implements System {
     public void render(SpriteBatch batch) {
         for (Entity entity : entities) {
             RenderingComponent component = entity.getComponent(RenderingComponent.class);
-            component.render(batch);
+            PositionComponent position = entity.getComponent(PositionComponent.class);
+            component.render(batch, position.getX(), position.getY());
         }
     }
 }

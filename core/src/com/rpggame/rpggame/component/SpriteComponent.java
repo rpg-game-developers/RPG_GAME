@@ -3,7 +3,7 @@ package com.rpggame.rpggame.component;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class SpriteComponent implements RenderingComponent, LogicComponent {
+public class SpriteComponent implements RenderingComponent {
     private Texture sprite;
 
     public SpriteComponent() {
@@ -22,12 +22,7 @@ public class SpriteComponent implements RenderingComponent, LogicComponent {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        batch.draw(sprite, 0, 0);
-    }
-
-    @Override
-    public void doSomething() {
-
+    public void render(SpriteBatch batch, double x, double y) {
+        batch.draw(sprite, (int)x, (int)y);
     }
 }

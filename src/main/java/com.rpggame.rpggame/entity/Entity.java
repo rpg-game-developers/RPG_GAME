@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Entity {
-    private long entityID;
     private List<Component> components;
     private EntityWorld world;
 

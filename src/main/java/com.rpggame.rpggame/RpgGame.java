@@ -33,9 +33,11 @@ public class RpgGame extends ApplicationAdapter {
 		entityWorld.addSystem(new PhysicsEntitySystem());
 
 		// create first entity
-		entity = new Entity(entityWorld);
+		entity = new Entity();
 		entity.addComponent(new SpriteComponent(player));
 		entity.addComponent(new PositionComponent(200, 150));
+		entity.addComponent(new VelocityComponent(0, 1));
+		entityWorld.addEntity(entity);
 	}
 
 	@Override
@@ -43,23 +45,6 @@ public class RpgGame extends ApplicationAdapter {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
 		entityWorld.getSystem(PhysicsEntitySystem.class).applyPhysics();
-
-		if(Gdx.input.isKeyPressed(Keys.LEFT)) {
-			entity.removeComponent(VelocityComponent.class);
-			entity.addComponent(new VelocityComponent(-1,0));
-		}
-		if(Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			entity.removeComponent(VelocityComponent.class);
-			entity.addComponent(new VelocityComponent(1,0));
-		}
-		if(Gdx.input.isKeyPressed(Keys.UP)) {
-			entity.removeComponent(VelocityComponent.class);
-			entity.addComponent(new VelocityComponent(0,1));
-		}
-		if(Gdx.input.isKeyPressed(Keys.DOWN)) {
-			entity.removeComponent(VelocityComponent.class);
-			entity.addComponent(new VelocityComponent(0,-1));
-		}
 
 		batch.begin();
 		entityWorld.getSystem(RenderingEntitySystem.class).render(batch);

@@ -7,8 +7,7 @@ import java.util.Set;
  * The base class for all kinds of events. Subjects transmit events to
  * subscribed observers.
  *
- * @param <T>
- *           The type of event.
+ * @param <T>  The type of event.
  */
 public class Subject<T> {
     private Set<Observer<T>> observers;

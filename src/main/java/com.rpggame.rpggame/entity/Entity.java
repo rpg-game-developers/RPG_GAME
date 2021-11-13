@@ -9,11 +9,33 @@ public class Entity {
     private List<Component> components;
     private EntityWorld world;
 
-    public Entity(EntityWorld world) {
-        this.world = world;
+    /**
+     * Intended way to create entities.
+     * It is more optimal to first create an entity like this,
+     * then add all the components,
+     * and then add it to the world.
+     */
+    public Entity() {
+        this.world = null;
         this.components = new ArrayList<>();
     }
 
+    /**
+     * Setting the world of the entity.
+     * WARNING: Should normally only be called by EntityWorld.
+     *
+     * @param world  the new world
+     */
+    public void setWorld(EntityWorld world) {
+        this.world = world;
+    }
+
+    /**
+     * Checks if this entity has at least one component of type T.
+     *
+     * @param clazz<T>  The class of the component to check
+     * @return          true if it exists, otherwise false
+     */
     public <T> boolean hasComponent(Class<T> clazz) {
         for (Component comp : components) {
             if (clazz.isInstance(comp)) {
@@ -23,6 +45,13 @@ public class Entity {
         return false;
     }
 
+    /**
+     * Get a single component in this entity of the type T.
+     * If this component does not exist it returns null.
+     *
+     * @param clazz<T>  The class of the component to get
+     * @return          The component if it exists, otherwise null
+     */
     public <T> T getComponent(Class<T> clazz) {
         for (Component comp : components) {
             if (clazz.isInstance(comp)) {
@@ -32,13 +61,27 @@ public class Entity {
         return null;
     }
 
+    /**
+     * Add a new component to this entity.
+     * This automatically adds this entity to the required systems.
+     *
+     * @param newComponent  The component to add.
+     */
     public void addComponent(Component newComponent) {
         components.add(newComponent);
-        world.notifyAddComponent(newComponent.getClass(), this);
+        if (world != null)
+            world.notifyAddComponent(newComponent.getClass(), this);
     }
 
+    /**
+     * Remove all components from this entity of type T.
+     * This automatically removes this entity from the systems it is not part of anymore.
+     *
+     * @param clazz<T>  The class type to remove
+     */
     public <T> void removeComponent(Class<T> clazz) {
-        world.notifyRemoveComponent(clazz, this);
-        components.removeIf(comp -> clazz.isInstance(comp));
+        if (world != null)
+            world.notifyRemoveComponent(clazz, this);
+        components.removeIf(clazz::isInstance);
     }
 }

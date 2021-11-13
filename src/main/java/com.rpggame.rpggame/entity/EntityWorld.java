@@ -23,8 +23,23 @@ public class EntityWorld {
         this.removeComponentSubjects = new HashMap<>();
     }
 
+    /**
+     * The intended way to add an entity to a world.
+     * For better performance should be called after adding all the components to the entity.
+     *
+     * @param entity  The entity to add to this world.
+     */
+    public void addEntity(Entity entity) {
+        entities.add(entity);
+        entity.setWorld(this);
+
+        for (EntitySystem system : entitySystems) {
+            system.onNewEntityAdded(entity);
+        }
+    }
+
     public List<Entity> getEntities() {
-        return entities;
+        return Collections.unmodifiableList(entities);
     }
 
     public List<EntitySystem> getSystems() {

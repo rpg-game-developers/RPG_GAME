@@ -39,6 +39,14 @@ public class EntitySystem {
      * @param world  the world to connect it to.
      */
     public void connect(EntityWorld world) {
+        // add entities
+        for (Entity entity : world.getEntities()) {
+            if(family.isMember(entity)) {
+                entities.add(entity);
+            }
+        }
+
+        // create observers
         for (Class<? extends Component> c : family.getTypes()) {
             ConnectedObserver<AddComponentEvent> addObserver = new ConnectedObserver<>() {
                 @Override
@@ -61,6 +69,17 @@ public class EntitySystem {
             };
             observers.add(removeObserver);
             world.subscribeRemoveComponent(c, removeObserver);
+        }
+    }
+
+    /**
+     * Method called when a new entity is added to the world.
+     *
+     * @param entity  the entity that was recently added.
+     */
+    public void onNewEntityAdded(Entity entity) {
+        if (family.isMember(entity)) {
+            entities.add(entity);
         }
     }
 

@@ -10,7 +10,7 @@ public class InputSystem extends EntitySystem {
         super(new EntityFamily(InputComp.class));
     }
 
-    public void handleController() {
+    public void handleInput() {
         for (Entity entity : getEntities()) {
             InputComp inputComp = entity.getComponent(InputComp.class);
             inputComp.handleInput(entity);

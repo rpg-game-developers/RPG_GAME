@@ -2,7 +2,6 @@ package com.rpggame.rpggame.component.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.rpggame.rpggame.component.input.InputComp;
 import com.rpggame.rpggame.component.physics.VelocityComp;
 import com.rpggame.rpggame.entity.Entity;
 

@@ -47,7 +47,7 @@ public class RpgGame extends ApplicationAdapter {
 	public void render() {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
-		entityWorld.getSystem(InputSystem.class).handleController();
+		entityWorld.getSystem(InputSystem.class).handleInput();
 		entityWorld.getSystem(PhysicsEntitySystem.class).applyPhysics();
 
 		batch.begin();

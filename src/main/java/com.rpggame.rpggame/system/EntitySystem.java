@@ -9,19 +9,27 @@ import com.rpggame.rpggame.entity.EntityWorld;
 import com.rpggame.rpggame.entity.events.AddComponentEvent;
 import com.rpggame.rpggame.entity.events.RemoveComponentEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EntitySystem {
-    public List<Entity> entities;
+    private List<Entity> entities;
     private List<ConnectedObserver<?>> observers;
-    private EntityFamily family;
+    private final EntityFamily family;
 
     public EntitySystem(EntityFamily family) {
         this.family = family;
         this.observers = new ArrayList<>();
         entities = new ArrayList<>();
+    }
+
+    /**
+     * Get all the entities that are interesting for the current system.
+     * The entities that are interesting are the ones that are part of the EntityFamily.
+     *
+     * @return  An unmodifiable list of all the interesting entities.
+     */
+    public List<Entity> getEntities() {
+        return Collections.unmodifiableList(entities);
     }
 
     /**

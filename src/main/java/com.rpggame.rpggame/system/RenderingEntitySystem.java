@@ -13,7 +13,7 @@ public class RenderingEntitySystem extends EntitySystem {
     }
 
     public void render(SpriteBatch batch) {
-        for (Entity entity : entities) {
+        for (Entity entity : getEntities()) {
             RenderingComponent component = entity.getComponent(RenderingComponent.class);
             PositionComponent position = entity.getComponent(PositionComponent.class);
             component.render(batch, position.getX(), position.getY());

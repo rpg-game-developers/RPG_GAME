@@ -35,7 +35,6 @@ public class RpgGame extends ApplicationAdapter {
 		// create first entity
 		entity = new Entity(entityWorld);
 		entity.addComponent(new SpriteComponent(player));
-		entity.addComponent(new VelocityComponent(2, 1));
 		entity.addComponent(new PositionComponent(200, 150));
 	}
 
@@ -46,7 +45,20 @@ public class RpgGame extends ApplicationAdapter {
 		entityWorld.getSystem(PhysicsEntitySystem.class).applyPhysics();
 
 		if(Gdx.input.isKeyPressed(Keys.LEFT)) {
-			entity.removeComponent(SpriteComponent.class);
+			entity.removeComponent(VelocityComponent.class);
+			entity.addComponent(new VelocityComponent(-1,0));
+		}
+		if(Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			entity.removeComponent(VelocityComponent.class);
+			entity.addComponent(new VelocityComponent(1,0));
+		}
+		if(Gdx.input.isKeyPressed(Keys.UP)) {
+			entity.removeComponent(VelocityComponent.class);
+			entity.addComponent(new VelocityComponent(0,1));
+		}
+		if(Gdx.input.isKeyPressed(Keys.DOWN)) {
+			entity.removeComponent(VelocityComponent.class);
+			entity.addComponent(new VelocityComponent(0,-1));
 		}
 
 		batch.begin();

@@ -12,7 +12,7 @@ public class PhysicsEntitySystem extends EntitySystem {
     }
 
     public void applyPhysics() {
-        for (Entity entity : entities) {
+        for (Entity entity : getEntities()) {
             VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
             PositionComponent position = entity.getComponent(PositionComponent.class);
             position.setX(position.getX() + velocity.getX());

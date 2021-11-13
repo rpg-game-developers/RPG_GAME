@@ -1,13 +1,15 @@
-package com.rpggame.rpggame.component;
+package com.rpggame.rpggame.component.physics;
 
-public class VelocityComponent implements Component {
-    double x;
-    double y;
+import com.rpggame.rpggame.component.Component;
 
-    public VelocityComponent() {
+public class PositionComp implements Component {
+    private double x;
+    private double y;
+
+    public PositionComp() {
     }
 
-    public VelocityComponent(double x, double y) {
+    public PositionComp(double x, double y) {
         this.x = x;
         this.y = y;
     }

@@ -2,15 +2,16 @@ package com.rpggame.rpggame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.rpggame.rpggame.component.PositionComponent;
-import com.rpggame.rpggame.component.SpriteComponent;
-import com.rpggame.rpggame.component.VelocityComponent;
+import com.rpggame.rpggame.component.input.PlayerControllerComp;
+import com.rpggame.rpggame.component.physics.PositionComp;
+import com.rpggame.rpggame.component.rendering.SpriteComp;
+import com.rpggame.rpggame.component.physics.VelocityComp;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.entity.EntityWorld;
+import com.rpggame.rpggame.system.InputSystem;
 import com.rpggame.rpggame.system.PhysicsEntitySystem;
 import com.rpggame.rpggame.system.RenderingEntitySystem;
 
@@ -31,12 +32,14 @@ public class RpgGame extends ApplicationAdapter {
 		entityWorld = new EntityWorld();
 		entityWorld.addSystem(new RenderingEntitySystem());
 		entityWorld.addSystem(new PhysicsEntitySystem());
+		entityWorld.addSystem(new InputSystem());
 
 		// create first entity
 		entity = new Entity();
-		entity.addComponent(new SpriteComponent(player));
-		entity.addComponent(new PositionComponent(200, 150));
-		entity.addComponent(new VelocityComponent(0, 1));
+		entity.addComponent(new SpriteComp(player));
+		entity.addComponent(new PositionComp(200, 150));
+		entity.addComponent(new VelocityComp(0, 0));
+		entity.addComponent(new PlayerControllerComp());
 		entityWorld.addEntity(entity);
 	}
 
@@ -44,6 +47,7 @@ public class RpgGame extends ApplicationAdapter {
 	public void render() {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
+		entityWorld.getSystem(InputSystem.class).handleController();
 		entityWorld.getSystem(PhysicsEntitySystem.class).applyPhysics();
 
 		batch.begin();

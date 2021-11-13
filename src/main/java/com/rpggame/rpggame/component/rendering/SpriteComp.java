@@ -1,15 +1,16 @@
-package com.rpggame.rpggame.component;
+package com.rpggame.rpggame.component.rendering;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.rpggame.rpggame.component.rendering.RenderingComp;
 
-public class SpriteComponent implements RenderingComponent {
+public class SpriteComp implements RenderingComp {
     private Texture sprite;
 
-    public SpriteComponent() {
+    public SpriteComp() {
     }
 
-    public SpriteComponent(Texture sprite) {
+    public SpriteComp(Texture sprite) {
         this.sprite = sprite;
     }
 

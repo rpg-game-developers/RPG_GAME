@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.rpggame.rpggame.component.PositionComponent;
 import com.rpggame.rpggame.component.SpriteComponent;
+import com.rpggame.rpggame.component.VelocityComponent;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.entity.EntityWorld;
+import com.rpggame.rpggame.system.PhysicsSystem;
 import com.rpggame.rpggame.system.RenderingSystem;
 
 public class RpgGame extends ApplicationAdapter {
@@ -27,16 +29,20 @@ public class RpgGame extends ApplicationAdapter {
 		// create entity world
 		entityWorld = new EntityWorld();
 		entityWorld.addSystem(new RenderingSystem());
+		entityWorld.addSystem(new PhysicsSystem());
 
 		// create first entity
 		entity = new Entity(entityWorld);
 		entity.addComponent(new SpriteComponent(player));
 		entity.addComponent(new PositionComponent(200, 150));
+		entity.addComponent(new VelocityComponent(2, 1));
 	}
 
 	@Override
 	public void render () {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
+
+		entityWorld.getSystem(PhysicsSystem.class).applyPhysics();
 
 		batch.begin();
 		entityWorld.getSystem(RenderingSystem.class).render(batch);

@@ -1,6 +1,5 @@
 package com.rpggame.rpggame.entity;
 
-import com.rpggame.rpggame.system.System;
 import com.rpggame.rpggame.component.Component;
 
 import java.util.ArrayList;
@@ -35,9 +34,11 @@ public class Entity {
 
     public void addComponent(Component newComponent) {
         components.add(newComponent);
+        world.notifyAddComponent(newComponent.getClass(), this);
+    }
 
-        for (System system : world.getSystems()) {
-            system.tryToAddEntity(this);
-        }
+    public <T> void removeComponent(Class<T> clazz) {
+        world.notifyRemoveComponent(clazz, this);
+        components.removeIf(comp -> clazz.isInstance(comp));
     }
 }

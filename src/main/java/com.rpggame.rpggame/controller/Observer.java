@@ -6,8 +6,11 @@ package com.rpggame.rpggame.controller;
  * @param <T>
  *     The type of event that gets received.
  */
-public interface Observer<T> {
+public abstract class Observer<T> {
 
-    void onNotify(T o);
+    public abstract void onNotify(T o);
 
+    public void onSubscribe(Subject<T> subject) {}
+
+    public void onUnsubscribe(Subject<T> subject) {}
 }

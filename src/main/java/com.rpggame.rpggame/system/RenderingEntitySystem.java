@@ -4,23 +4,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.rpggame.rpggame.component.PositionComponent;
 import com.rpggame.rpggame.component.RenderingComponent;
 import com.rpggame.rpggame.entity.Entity;
+import com.rpggame.rpggame.entity.EntityFamily;
 
-import java.util.ArrayList;
-import java.util.List;
+public class RenderingEntitySystem extends EntitySystem {
 
-public class RenderingSystem implements System {
-    private List<Entity> entities;
-
-    public RenderingSystem() {
-        this.entities = new ArrayList<>();
-    }
-
-    @Override
-    public void tryToAddEntity(Entity entity) {
-        if (entity.hasComponent(RenderingComponent.class) &&
-            entity.hasComponent(PositionComponent.class)) {
-            entities.add(entity);
-        }
+    public RenderingEntitySystem() {
+        super(new EntityFamily(RenderingComponent.class, PositionComponent.class));
     }
 
     public void render(SpriteBatch batch) {

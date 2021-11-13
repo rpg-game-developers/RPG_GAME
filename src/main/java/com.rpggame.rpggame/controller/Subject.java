@@ -19,10 +19,12 @@ public class Subject<T> {
 
     public void subscribe(Observer<T> observer) {
         observers.add(observer);
+        observer.onSubscribe(this);
     }
 
     public void unsubscribe(Observer<T> observer) {
         observers.remove(observer);
+        observer.onUnsubscribe(this);
     }
 
     public void notify(T event) {

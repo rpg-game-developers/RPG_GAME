@@ -3,23 +3,12 @@ package com.rpggame.rpggame.system;
 import com.rpggame.rpggame.component.PositionComponent;
 import com.rpggame.rpggame.component.VelocityComponent;
 import com.rpggame.rpggame.entity.Entity;
+import com.rpggame.rpggame.entity.EntityFamily;
 
-import java.util.ArrayList;
-import java.util.List;
+public class PhysicsEntitySystem extends EntitySystem {
 
-public class PhysicsSystem implements System {
-    private List<Entity> entities;
-
-    public PhysicsSystem() {
-        this.entities = new ArrayList<>();
-    }
-
-    @Override
-    public void tryToAddEntity(Entity entity) {
-        if (entity.hasComponent(PositionComponent.class) &&
-            entity.hasComponent(VelocityComponent.class)) {
-            entities.add(entity);
-        }
+    public PhysicsEntitySystem() {
+        super(new EntityFamily(PositionComponent.class, VelocityComponent.class));
     }
 
     public void applyPhysics() {

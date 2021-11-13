@@ -9,7 +9,6 @@ public class DesktopLauncher {
         config.useVsync(true);
         config.setTitle("Rpg Game");
         config.setWindowedMode(960, 640);
-        config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
         new Lwjgl3Application(new RpgGame(), config);
     }
 }

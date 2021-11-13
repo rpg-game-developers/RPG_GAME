@@ -3,14 +3,14 @@ package com.rpggame.rpggame.entity.events;
 import com.rpggame.rpggame.entity.Entity;
 
 /**
- * Event that is sent when an entity adds a component.
+ * Event that is sent when an entity removes a component.
  *
  */
-public class AddComponentEvent {
+public class RemoveComponentEvent {
 
     private Entity entity;
 
-    public AddComponentEvent(Entity entity) {
+    public RemoveComponentEvent(Entity entity) {
         this.entity = entity;
     }
 

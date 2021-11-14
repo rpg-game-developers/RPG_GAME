@@ -1,32 +1,36 @@
 package com.rpggame.rpggame.component.physics;
 
+import com.badlogic.gdx.math.Vector2;
 import com.rpggame.rpggame.component.Component;
 
 public class VelocityComp implements Component {
-    double x;
-    double y;
+    private Vector2 velocity;
 
     public VelocityComp() {
+        this.velocity = new Vector2();
     }
 
-    public VelocityComp(double x, double y) {
-        this.x = x;
-        this.y = y;
+    public VelocityComp(float x, float y) {
+        this.velocity = new Vector2(x,y);
     }
 
-    public double getX() {
-        return x;
+    public Vector2 getVelocity() {
+        return velocity;
     }
 
-    public void setX(double x) {
-        this.x = x;
+    public float getX() {
+        return velocity.x;
     }
 
-    public double getY() {
-        return y;
+    public void setX(float x) {
+        this.velocity.x = x;
     }
 
-    public void setY(double y) {
-        this.y = y;
+    public float getY() {
+        return this.velocity.y;
+    }
+
+    public void setY(float y) {
+        this.velocity.y = y;
     }
 }

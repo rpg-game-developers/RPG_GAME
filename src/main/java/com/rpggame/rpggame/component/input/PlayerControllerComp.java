@@ -9,7 +9,7 @@ public class PlayerControllerComp implements InputComp {
     @Override
     public void handleInput(Entity entity) {
         VelocityComp vel = entity.getComponent(VelocityComp.class);
-        double speed = 4;
+        float speed = 4;
 
         vel.setX(0);
         vel.setY(0);

@@ -15,6 +15,7 @@ public class EntitySystem {
     private List<Entity> entities;
     private List<ConnectedObserver<?>> observers;
     private final EntityFamily family;
+    private EntityWorld world;
 
     public EntitySystem(EntityFamily family) {
         this.family = family;
@@ -39,6 +40,8 @@ public class EntitySystem {
      * @param world  the world to connect it to.
      */
     public void connect(EntityWorld world) {
+        this.world = world;
+
         // add entities
         for (Entity entity : world.getEntities()) {
             if(family.isMember(entity)) {
@@ -73,6 +76,15 @@ public class EntitySystem {
     }
 
     /**
+     * Get the world this EntitySystem is connected to.
+     *
+     * @return  The EntityWorld this EntitySystem is connected to.
+     */
+    public EntityWorld getWorld() {
+        return this.world;
+    }
+
+    /**
      * Method called when a new entity is added to the world.
      *
      * @param entity  the entity that was recently added.
@@ -92,6 +104,7 @@ public class EntitySystem {
             observer.unsubscribe();
         }
 
+        this.world = null;
         this.entities = null;
     }
 }

@@ -1,17 +1,16 @@
 package com.rpggame.rpggame;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.rpggame.rpggame.component.NameComp;
 import com.rpggame.rpggame.component.input.PlayerControllerComp;
 import com.rpggame.rpggame.component.physics.TransformComp;
 import com.rpggame.rpggame.component.physics.collision.RectangleCollisionComp;
 import com.rpggame.rpggame.component.rendering.SpriteComp;
 import com.rpggame.rpggame.component.physics.VelocityComp;
 import com.rpggame.rpggame.entity.Entity;
-import com.rpggame.rpggame.entity.EntityWorld;
 import com.rpggame.rpggame.system.CollisionSystem;
 import com.rpggame.rpggame.system.InputSystem;
 import com.rpggame.rpggame.system.PhysicsEntitySystem;
@@ -41,6 +40,7 @@ public class RpgGame extends EntityApplicationAdapter {
 
 		// create first entity
 		entity = new Entity();
+		entity.addComponent(new NameComp("Player"));
 		entity.addComponent(new SpriteComp(player));
 		entity.addComponent(new TransformComp(200, 150));
 		entity.addComponent(new VelocityComp(0, 0));
@@ -50,6 +50,7 @@ public class RpgGame extends EntityApplicationAdapter {
 
 		// create box
 		Entity entity2 = new Entity();
+		entity2.addComponent(new NameComp("Box"));
 		entity2.addComponent(new SpriteComp(box));
 		entity2.addComponent(new TransformComp(400, 400));
 		entity2.addComponent(new RectangleCollisionComp(128, 128));

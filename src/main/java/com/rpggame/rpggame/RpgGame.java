@@ -17,23 +17,23 @@ import com.rpggame.rpggame.system.InputSystem;
 import com.rpggame.rpggame.system.PhysicsEntitySystem;
 import com.rpggame.rpggame.system.RenderingEntitySystem;
 
-public class RpgGame extends ApplicationAdapter {
+public class RpgGame extends EntityApplicationAdapter {
 	private Texture player;
 	private Texture box;
 	private SpriteBatch batch;
 
-	private EntityWorld entityWorld;
 	private Entity entity;
 
 	@Override
 	public void create() {
+		super.create();
+
 		// load all assets
 		player = new Texture(Gdx.files.internal("alienPink_round.png"));
 		box = new Texture(Gdx.files.internal("boxCrate_double.png"));
 		batch = new SpriteBatch();
 
 		// create entity world
-		entityWorld = new EntityWorld();
 		entityWorld.addSystem(new RenderingEntitySystem());
 		entityWorld.addSystem(new PhysicsEntitySystem());
 		entityWorld.addSystem(new InputSystem());
@@ -62,6 +62,9 @@ public class RpgGame extends ApplicationAdapter {
 
 		entityWorld.getSystem(InputSystem.class).handleInput();
 		entityWorld.getSystem(PhysicsEntitySystem.class).applyPhysics();
+
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
 		entityWorld.getSystem(RenderingEntitySystem.class).render(batch);

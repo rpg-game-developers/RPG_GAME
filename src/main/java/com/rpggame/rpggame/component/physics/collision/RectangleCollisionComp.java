@@ -2,6 +2,7 @@ package com.rpggame.rpggame.component.physics.collision;
 
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
+import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.component.physics.TransformComp;
 
 public class RectangleCollisionComp implements CollisionComp {
@@ -41,4 +42,10 @@ public class RectangleCollisionComp implements CollisionComp {
         }
         return false;
     }
+
+    @Override
+    public Component clone() {
+        return new RectangleCollisionComp(size.x, size.y);
+    }
+
 }

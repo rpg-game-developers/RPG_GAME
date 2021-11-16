@@ -18,4 +18,9 @@ public class NameComp implements Component {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public Component clone() {
+        return new NameComp(name);
+    }
 }

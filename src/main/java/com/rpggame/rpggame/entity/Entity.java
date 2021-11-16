@@ -84,4 +84,18 @@ public class Entity {
             world.notifyRemoveComponent(clazz, this);
         components.removeIf(clazz::isInstance);
     }
+
+    /**
+     * Makes a deep copy of this entity and all its components.
+     * This new entity is not part of a world.
+     *
+     * @return  A new entity with a clone of this entity's components.
+     */
+    public Entity clone() {
+        Entity entity = new Entity();
+        for (Component comp : components) {
+            entity.components.add(comp.clone());
+        }
+        return entity;
+    }
 }

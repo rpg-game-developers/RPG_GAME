@@ -96,6 +96,17 @@ public class EntitySystem {
     }
 
     /**
+     * Method called when an entity is removed from the world.
+     *
+     * @param entity  the entity that will be removed
+     */
+    public void onEntityRemoved(Entity entity) {
+        if (family.isMember(entity)) {
+            entities.remove(entity);
+        }
+    }
+
+    /**
      * Method that should be called when wanting to destroy a system.
      * WARNING: Should normally only be called by EntityWorld.
      */

@@ -2,6 +2,7 @@ package com.rpggame.rpggame.component.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.component.physics.VelocityComp;
 import com.rpggame.rpggame.entity.Entity;
 
@@ -29,5 +30,10 @@ public class PlayerControllerComp implements InputComp {
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             vel.setY(vel.getY() - speed);
         }
+    }
+
+    @Override
+    public Component clone() {
+        return new PlayerControllerComp();
     }
 }

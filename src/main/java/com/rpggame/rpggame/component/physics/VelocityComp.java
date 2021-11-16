@@ -33,4 +33,9 @@ public class VelocityComp implements Component {
     public void setY(float y) {
         this.velocity.y = y;
     }
+
+    public Component clone() {
+        return new VelocityComp(velocity.x, velocity.y);
+    }
+
 }

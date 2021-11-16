@@ -25,6 +25,7 @@ public class EntityWorld {
 
     /**
      * The intended way to add an entity to a world.
+     * This also adds the entity to the systems it should be part of.
      * For better performance should be called after adding all the components to the entity.
      *
      * @param entity  The entity to add to this world.
@@ -36,6 +37,20 @@ public class EntityWorld {
         for (EntitySystem system : entitySystems) {
             system.onNewEntityAdded(entity);
         }
+    }
+
+    /**
+     * The intended way to remove an entity from a world.
+     * It automatically removes the entity from the applied systems.
+     *
+     * @param entity  The entity to remove from this world.
+     */
+    public void removeEntity(Entity entity) {
+        for (EntitySystem system : entitySystems) {
+            system.onEntityRemoved(entity);
+        }
+
+        entities.remove(entity);
     }
 
     public List<Entity> getEntities() {

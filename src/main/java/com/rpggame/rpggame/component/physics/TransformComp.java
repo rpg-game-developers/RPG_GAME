@@ -37,4 +37,9 @@ public class TransformComp implements Component {
     public void setY(float y) {
         position.y = y;
     }
+
+    @Override
+    public Component clone() {
+        return new TransformComp(position.x, position.y);
+    }
 }

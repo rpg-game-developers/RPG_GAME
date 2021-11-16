@@ -1,5 +1,6 @@
 package com.rpggame.rpggame.component.rendering;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.rpggame.rpggame.component.Component;
 
@@ -9,6 +10,6 @@ import com.rpggame.rpggame.component.Component;
  */
 public interface RenderingComp extends Component {
 
-    void render(SpriteBatch batch, double x, double y);
+    void render(OrthographicCamera camera, SpriteBatch batch, double x, double y);
 
 }

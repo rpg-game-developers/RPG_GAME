@@ -73,7 +73,7 @@ public class RpgGame extends EntityApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
-		entityWorld.getSystem(RenderingEntitySystem.class).render(batch);
+		entityWorld.getSystem(RenderingEntitySystem.class).render(camera, batch);
 		batch.end();
 
 //		loginScreen.show();

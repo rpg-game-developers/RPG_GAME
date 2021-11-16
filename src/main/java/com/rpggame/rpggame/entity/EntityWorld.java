@@ -1,5 +1,6 @@
 package com.rpggame.rpggame.entity;
 
+import com.badlogic.gdx.InputProcessor;
 import com.rpggame.rpggame.controller.Observer;
 import com.rpggame.rpggame.controller.Subject;
 import com.rpggame.rpggame.entity.events.AddComponentEvent;
@@ -10,7 +11,7 @@ import org.lwjgl.Sys;
 
 import java.util.*;
 
-public class EntityWorld {
+public class EntityWorld implements InputProcessor {
     private List<Entity> entities;
     private List<EntitySystem> entitySystems;
     private Map<Class<?>, Subject<AddComponentEvent>> addComponentSubjects;
@@ -198,5 +199,94 @@ public class EntityWorld {
 
             subject.notify(new RemoveComponentEvent(entity));
         }
+    }
+
+    /**
+     * This function should be called from the render function in your game.
+     */
+    public void onRender() {
+        for (EntitySystem system : entitySystems) {
+            system.onRender();
+        }
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        for (EntitySystem system : entitySystems) {
+            if (system.keyDown(keycode)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        for (EntitySystem system : entitySystems) {
+            if (system.keyUp(keycode)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char c) {
+        for (EntitySystem system : entitySystems) {
+            if (system.keyTyped(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int x, int y, int pointer, int button) {
+        for (EntitySystem system : entitySystems) {
+            if (system.touchDown(x, y, pointer, button)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int x, int y, int pointer, int button) {
+        for (EntitySystem system : entitySystems) {
+            if (system.touchUp(x, y, pointer, button)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int x, int y, int pointer) {
+        for (EntitySystem system : entitySystems) {
+            if (system.touchDragged(x, y, pointer)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int x, int y) {
+        for (EntitySystem system : entitySystems) {
+            if (system.mouseMoved(x, y)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(float deltaX, float deltaY) {
+        for (EntitySystem system : entitySystems) {
+            if (system.scrolled(deltaX, deltaY)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

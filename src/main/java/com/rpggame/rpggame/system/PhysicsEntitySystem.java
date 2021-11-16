@@ -12,7 +12,8 @@ public class PhysicsEntitySystem extends EntitySystem {
         super(new EntityFamily(TransformComp.class, VelocityComp.class));
     }
 
-    public void applyPhysics() {
+    @Override
+    public void onRender() {
         CollisionSystem collisionSystem = getWorld().getSystem(CollisionSystem.class);
 
         for (Entity entity : getEntities()) {

@@ -1,8 +1,8 @@
 package com.rpggame.rpggame.system;
 
+import com.badlogic.gdx.InputProcessor;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.controller.ConnectedObserver;
-import com.rpggame.rpggame.controller.Observer;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.entity.EntityFamily;
 import com.rpggame.rpggame.entity.EntityWorld;
@@ -11,7 +11,7 @@ import com.rpggame.rpggame.entity.events.RemoveComponentEvent;
 
 import java.util.*;
 
-public class EntitySystem {
+public class EntitySystem implements InputProcessor {
     private List<Entity> entities;
     private List<ConnectedObserver<?>> observers;
     private final EntityFamily family;
@@ -21,6 +21,51 @@ public class EntitySystem {
         this.family = family;
         this.observers = new ArrayList<>();
         entities = new ArrayList<>();
+    }
+
+    /**
+     * This method should be overridden if you want to do something every frame.
+     */
+    public void onRender() {}
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char c) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int x, int y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int x, int y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int x, int y, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int x, int y) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(float deltaX, float deltaY) {
+        return false;
     }
 
     /**

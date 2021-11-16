@@ -36,7 +36,7 @@ public class RpgGame extends EntityApplicationAdapter {
 		batch = new SpriteBatch();
 
 		// create entity world
-		entityWorld.addSystem(new RenderingEntitySystem());
+		entityWorld.addSystem(new RenderingEntitySystem(camera, batch));
 		entityWorld.addSystem(new PhysicsEntitySystem());
 		entityWorld.addSystem(new InputSystem());
 		entityWorld.addSystem(new CollisionSystem());
@@ -67,18 +67,12 @@ public class RpgGame extends EntityApplicationAdapter {
 		super.render();
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
-//		entityWorld.getSystem(InputSystem.class).handleInput();
-//		entityWorld.getSystem(PhysicsEntitySystem.class).applyPhysics();
-//
-//		camera.update();
-//		batch.setProjectionMatrix(camera.combined);
-//
-//		batch.begin();
-//		entityWorld.getSystem(RenderingEntitySystem.class).render(batch);
-//		batch.end();
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
+		entityWorld.onRender();
 
-		loginScreen.show();
-		loginScreen.render(Gdx.graphics.getDeltaTime());
+//		loginScreen.show();
+//		loginScreen.render(Gdx.graphics.getDeltaTime());
 	}
 	
 	@Override

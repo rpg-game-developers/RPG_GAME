@@ -9,15 +9,23 @@ import com.rpggame.rpggame.entity.EntityFamily;
 
 public class RenderingEntitySystem extends EntitySystem {
 
-    public RenderingEntitySystem() {
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
+
+    public RenderingEntitySystem(OrthographicCamera camera, SpriteBatch batch) {
         super(new EntityFamily(RenderingComp.class, TransformComp.class));
+        this.camera = camera;
+        this.batch = batch;
     }
 
-    public void render(OrthographicCamera camera, SpriteBatch batch) {
+    @Override
+    public void onRender() {
+        batch.begin();
         for (Entity entity : getEntities()) {
             RenderingComp component = entity.getComponent(RenderingComp.class);
             TransformComp position = entity.getComponent(TransformComp.class);
             component.render(camera, batch, position.getX(), position.getY());
         }
+        batch.end();
     }
 }

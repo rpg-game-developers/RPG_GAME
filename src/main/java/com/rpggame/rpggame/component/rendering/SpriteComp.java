@@ -23,6 +23,8 @@ public class SpriteComp implements RenderingComp {
 
     @Override
     public void render(SpriteBatch batch, double x, double y) {
-        batch.draw(sprite, (int)x, (int)y);
+        if (sprite != null) {
+            batch.draw(sprite, (int)x, (int)y);
+        }
     }
 }

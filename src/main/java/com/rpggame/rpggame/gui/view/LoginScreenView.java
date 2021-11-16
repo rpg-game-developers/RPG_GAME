@@ -1,18 +1,11 @@
 package com.rpggame.rpggame.gui.view;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.rpggame.rpggame.gui.controller.LoginScreen;
-import org.w3c.dom.Text;
 
 public class LoginScreenView {
 
@@ -21,7 +14,11 @@ public class LoginScreenView {
     private final TextureAtlas atlas;
     private final FitViewport viewport;
     private final BitmapFont font;
+
+    // all ui components
     private Table loginTable;
+    private Label usernameLabel;
+    private Label passwordLabel;
     private TextField usernameText;
     private TextField passwordText;
     private Button submitButton;
@@ -32,16 +29,11 @@ public class LoginScreenView {
     private final float sh;
     private final float ch;
 
-    private boolean passwordFieldBackspaceClicked;
-
-
     public LoginScreenView() {
         this.sw = Gdx.graphics.getWidth();
         this.sh = Gdx.graphics.getHeight();
         this.cw = sw * 0.7f;
         this.ch = sh * 0.5f;
-
-        this.passwordFieldBackspaceClicked = false;
 
         this.viewport = new FitViewport(sw, sh);
         this.stage = new Stage(viewport);
@@ -53,30 +45,15 @@ public class LoginScreenView {
     }
 
     public void createAndShowLoginTable() {
-        Label usernameLabel = new Label("Username: ", this.skin);
-        usernameLabel.setFontScale(1.0f);
+        this.usernameLabel = new Label("Username: ", this.skin);
+        this.usernameLabel.setFontScale(1.0f);
 
-        Label passwordLabel = new Label("Password:", this.skin);
+        this.passwordLabel = new Label("Password:", this.skin);
         passwordLabel.setFontScale(1.0f);
 
         this.usernameText = new TextField("Username", this.skin);
-
         this.passwordText = new TextField("Password", this.skin);
-        this.passwordText.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent changeEvent, Actor actor) {
-                // backspace is clicked so we want to clear the text field
-                if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
-                    if(!passwordFieldBackspaceClicked) {
-                        passwordFieldBackspaceClicked = true;
-                        passwordText.setText("");
-                    }
-                }
-            }
-        });
-
         this.submitButton = new TextButton("Submit", this.skin);
-
         this.registerButton = new TextButton("Register Page", this.skin);
 
         this.loginTable = new Table(this.skin);
@@ -131,4 +108,11 @@ public class LoginScreenView {
         return registerButton;
     }
 
+    public Label getUsernameLabel() {
+        return usernameLabel;
+    }
+
+    public Label getPasswordLabel() {
+        return passwordLabel;
+    }
 }

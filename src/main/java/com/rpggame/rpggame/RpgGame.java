@@ -76,8 +76,8 @@ public class RpgGame extends EntityApplicationAdapter {
 		entityWorld.getSystem(RenderingEntitySystem.class).render(batch);
 		batch.end();
 
-		loginScreen.show();
-		loginScreen.render(Gdx.graphics.getDeltaTime());
+//		loginScreen.show();
+//		loginScreen.render(Gdx.graphics.getDeltaTime());
 	}
 	
 	@Override

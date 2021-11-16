@@ -8,6 +8,9 @@ import com.rpggame.rpggame.entity.Entity;
 public class PlayerControllerComp implements InputComp {
     @Override
     public void handleInput(Entity entity) {
+        if (!entity.hasComponent(VelocityComp.class))
+            return;
+
         VelocityComp vel = entity.getComponent(VelocityComp.class);
         float speed = 4;
 

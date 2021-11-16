@@ -11,9 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.rpggame.rpggame.gui.controller.LoginScreenController;
+import com.rpggame.rpggame.gui.controller.LoginScreen;
+import org.w3c.dom.Text;
 
-public class LoginScreen extends ScreenAdapter {
+public class LoginScreenView {
 
     private final Stage stage;
     private final Skin skin;
@@ -21,31 +22,29 @@ public class LoginScreen extends ScreenAdapter {
     private final FitViewport viewport;
     private final BitmapFont font;
     private Table loginTable;
-    private final LoginScreenController loginScreenController;
+    private TextField usernameText;
+    private TextField passwordText;
+    private Button submitButton;
+    private Button registerButton;
 
     private final float cw;
     private final float sw;
     private final float sh;
     private final float ch;
 
-    private String username;
-    private String password;
     private boolean passwordFieldBackspaceClicked;
 
-    public LoginScreen(final SpriteBatch batch) {
-        this.loginScreenController = new LoginScreenController();
 
+    public LoginScreenView() {
         this.sw = Gdx.graphics.getWidth();
         this.sh = Gdx.graphics.getHeight();
         this.cw = sw * 0.7f;
         this.ch = sh * 0.5f;
 
-        this.username = "";
-        this.password = "";
         this.passwordFieldBackspaceClicked = false;
 
         this.viewport = new FitViewport(sw, sh);
-        this.stage = new Stage(viewport, batch);
+        this.stage = new Stage(viewport);
         this.atlas = new TextureAtlas("skins/default/uiskin.atlas");
         this.skin = new Skin(Gdx.files.internal("skins/default/uiskin.json"), this.atlas);
         this.font = new BitmapFont(Gdx.files.internal("skins/default/default.fnt"));
@@ -60,11 +59,10 @@ public class LoginScreen extends ScreenAdapter {
         Label passwordLabel = new Label("Password:", this.skin);
         passwordLabel.setFontScale(1.0f);
 
-        TextField usernameText = new TextField("Username", this.skin);
+        this.usernameText = new TextField("Username", this.skin);
 
-        TextField passwordText = new TextField("Password", this.skin);
-        passwordText.setTextFieldListener((textField, c) -> password = textField.getText());
-        passwordText.addListener(new ChangeListener() {
+        this.passwordText = new TextField("Password", this.skin);
+        this.passwordText.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
                 // backspace is clicked so we want to clear the text field
@@ -77,21 +75,9 @@ public class LoginScreen extends ScreenAdapter {
             }
         });
 
-        Button submitButton = new TextButton("Submit", this.skin);
-        submitButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent changeEvent, Actor actor) {
-                loginScreenController.submitLoginData();
-            }
-        });
+        this.submitButton = new TextButton("Submit", this.skin);
 
-        Button goToRegisterPageButton = new TextButton("Register Page", this.skin);
-        goToRegisterPageButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent changeEvent, Actor actor) {
-                loginScreenController.goToRegisterPage();
-            }
-        });
+        this.registerButton = new TextButton("Register Page", this.skin);
 
         this.loginTable = new Table(this.skin);
         this.loginTable.row();
@@ -102,40 +88,47 @@ public class LoginScreen extends ScreenAdapter {
         this.loginTable.add(passwordText);
         this.loginTable.row();
         this.loginTable.add(submitButton);
-        this.loginTable.add(goToRegisterPageButton);
+        this.loginTable.add(registerButton);
 
         this.loginTable.setSize(this.cw, this.ch);
         this.loginTable.setPosition((this.sw - this.cw) / 2.0f, (this.sh - this.ch) / 2.0f);
     }
 
-    @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(loginTable);
     }
 
-    @Override
     public void render(float v) {
         this.stage.act(v);
         this.stage.draw();
     }
 
-    @Override
-    public void resize(int i, int i1) {
-        viewport.update(i, i1);
+    public void resize(int width, int height) {
+        viewport.update(width, height);
     }
 
-
-    @Override
-    public void hide() {
-        dispose();
-    }
-
-    @Override
     public void dispose() {
         this.stage.dispose();
         this.font.dispose();
         this.skin.dispose();
         this.atlas.dispose();
     }
+
+    public TextField getUsernameText() {
+        return usernameText;
+    }
+
+    public TextField getPasswordText() {
+        return passwordText;
+    }
+
+    public Button getSubmitButton() {
+        return submitButton;
+    }
+
+    public Button getRegisterButton() {
+        return registerButton;
+    }
+
 }

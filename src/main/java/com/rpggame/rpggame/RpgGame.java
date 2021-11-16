@@ -15,11 +15,13 @@ import com.rpggame.rpggame.system.CollisionSystem;
 import com.rpggame.rpggame.system.InputSystem;
 import com.rpggame.rpggame.system.PhysicsEntitySystem;
 import com.rpggame.rpggame.system.RenderingEntitySystem;
+import com.rpggame.rpggame.view.LoginScreen;
 
 public class RpgGame extends EntityApplicationAdapter {
 	private Texture player;
 	private Texture box;
 	private SpriteBatch batch;
+	private LoginScreen loginScreen;
 
 	private Entity entity;
 
@@ -55,10 +57,13 @@ public class RpgGame extends EntityApplicationAdapter {
 		entity2.addComponent(new TransformComp(400, 400));
 		entity2.addComponent(new RectangleCollisionComp(128, 128));
 		entityWorld.addEntity(entity2);
+
+		loginScreen = new LoginScreen(batch);
 	}
 
 	@Override
 	public void render() {
+		super.render();
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
 		entityWorld.getSystem(InputSystem.class).handleInput();
@@ -70,6 +75,9 @@ public class RpgGame extends EntityApplicationAdapter {
 		batch.begin();
 		entityWorld.getSystem(RenderingEntitySystem.class).render(batch);
 		batch.end();
+
+		loginScreen.show();
+		loginScreen.render(Gdx.graphics.getDeltaTime());
 	}
 	
 	@Override
@@ -77,5 +85,6 @@ public class RpgGame extends EntityApplicationAdapter {
 		super.dispose();
 		player.dispose();
 		batch.dispose();
+		loginScreen.dispose();
 	}
 }

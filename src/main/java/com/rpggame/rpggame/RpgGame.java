@@ -15,7 +15,7 @@ import com.rpggame.rpggame.system.CollisionSystem;
 import com.rpggame.rpggame.system.InputSystem;
 import com.rpggame.rpggame.system.PhysicsEntitySystem;
 import com.rpggame.rpggame.system.RenderingEntitySystem;
-import com.rpggame.rpggame.view.LoginScreen;
+import com.rpggame.rpggame.gui.view.LoginScreen;
 
 public class RpgGame extends EntityApplicationAdapter {
 	private Texture player;
@@ -66,18 +66,18 @@ public class RpgGame extends EntityApplicationAdapter {
 		super.render();
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
-		entityWorld.getSystem(InputSystem.class).handleInput();
-		entityWorld.getSystem(PhysicsEntitySystem.class).applyPhysics();
+//		entityWorld.getSystem(InputSystem.class).handleInput();
+//		entityWorld.getSystem(PhysicsEntitySystem.class).applyPhysics();
+//
+//		camera.update();
+//		batch.setProjectionMatrix(camera.combined);
+//
+//		batch.begin();
+//		entityWorld.getSystem(RenderingEntitySystem.class).render(batch);
+//		batch.end();
 
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
-
-		batch.begin();
-		entityWorld.getSystem(RenderingEntitySystem.class).render(batch);
-		batch.end();
-
-//		loginScreen.show();
-//		loginScreen.render(Gdx.graphics.getDeltaTime());
+		loginScreen.show();
+		loginScreen.render(Gdx.graphics.getDeltaTime());
 	}
 	
 	@Override

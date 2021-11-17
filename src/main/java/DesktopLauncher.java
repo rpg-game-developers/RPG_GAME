@@ -1,3 +1,4 @@
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.rpggame.rpggame.RpgGame;
@@ -8,7 +9,8 @@ public class DesktopLauncher {
         config.setIdleFPS(60);
         config.useVsync(true);
         config.setTitle("Rpg Game");
-        config.setWindowedMode(960, 640);
+        config.setWindowedMode(1280, 720);
+
         new Lwjgl3Application(new RpgGame(), config);
     }
 }

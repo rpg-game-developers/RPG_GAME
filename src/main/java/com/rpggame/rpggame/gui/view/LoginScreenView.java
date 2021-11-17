@@ -32,10 +32,10 @@ public class LoginScreenView {
     public LoginScreenView() {
         this.sw = Gdx.graphics.getWidth();
         this.sh = Gdx.graphics.getHeight();
-        this.cw = sw * 0.7f;
-        this.ch = sh * 0.5f;
+        this.cw = this.sw * 0.7f;
+        this.ch = this.sh * 0.5f;
 
-        this.viewport = new FitViewport(sw, sh);
+        this.viewport = new FitViewport(this.sw, this.sh);
         this.stage = new Stage(viewport);
         this.atlas = new TextureAtlas("skins/default/uiskin.atlas");
         this.skin = new Skin(Gdx.files.internal("skins/default/uiskin.json"), this.atlas);
@@ -44,6 +44,9 @@ public class LoginScreenView {
         createAndShowLoginTable();
     }
 
+    /**
+     * Creates the login table with the labels, text inputs and buttons.
+     */
     public void createAndShowLoginTable() {
         this.usernameLabel = new Label("Username: ", this.skin);
         this.usernameLabel.setFontScale(1.0f);

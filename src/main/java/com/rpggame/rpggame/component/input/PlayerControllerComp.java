@@ -7,13 +7,23 @@ import com.rpggame.rpggame.component.physics.VelocityComp;
 import com.rpggame.rpggame.entity.Entity;
 
 public class PlayerControllerComp implements InputComp {
+
+    private float speed;
+
+    public PlayerControllerComp() {
+        this.speed = 1.0f;
+    }
+
+    public PlayerControllerComp(float speed) {
+        this.speed = speed;
+    }
+
     @Override
     public void handleInput(Entity entity) {
         if (!entity.hasComponent(VelocityComp.class))
             return;
 
         VelocityComp vel = entity.getComponent(VelocityComp.class);
-        float speed = 4;
 
         vel.setX(0);
         vel.setY(0);
@@ -34,6 +44,15 @@ public class PlayerControllerComp implements InputComp {
 
     @Override
     public Component clone() {
-        return new PlayerControllerComp();
+        return new PlayerControllerComp(speed);
     }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
 }

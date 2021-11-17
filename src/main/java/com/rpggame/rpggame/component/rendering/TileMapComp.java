@@ -73,6 +73,20 @@ public class TileMapComp implements RenderingComp {
         return splitTiles;
     }
 
+    public int getRows() {
+        if (splitTiles != null) {
+            return splitTiles.length;
+        }
+        return 0;
+    }
+
+    public int getColumns() {
+        if(splitTiles != null) {
+            return splitTiles[0].length;
+        }
+        return 0;
+    }
+
     @Override
     public void render(OrthographicCamera camera, SpriteBatch batch, double x, double y) {
         if (this.renderer != null) {

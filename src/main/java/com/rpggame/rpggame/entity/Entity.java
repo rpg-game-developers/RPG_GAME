@@ -1,6 +1,7 @@
 package com.rpggame.rpggame.entity;
 
 import com.rpggame.rpggame.component.Component;
+import com.rpggame.rpggame.system.EntitySystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,15 @@ import java.util.List;
 public class Entity {
     private List<Component> components;
     private EntityWorld world;
+
+    // entities are connected in a linked list like way
+    private Entity parent;
+    private Entity next;
+    private Entity prev;
+    private Entity firstChild;
+    private Entity lastChild;
+    private int indexNumber;
+    private static final int sqrtNumber = 1000;
 
     /**
      * Intended way to create entities.
@@ -18,16 +28,148 @@ public class Entity {
     public Entity() {
         this.world = null;
         this.components = new ArrayList<>();
+        this.parent = null;
+        this.next = null;
+        this.prev = null;
+        this.firstChild = null;
+        this.lastChild = null;
+        this.indexNumber = 0;
     }
 
     /**
      * Setting the world of the entity.
-     * WARNING: Should normally only be called by EntityWorld.
+     * WARNING: Should normally only be called by EntityWorld and itself.
      *
      * @param world  the new world
      */
     public void setWorld(EntityWorld world) {
         this.world = world;
+    }
+
+    /**
+     * Makes the other entity a child of this entity.
+     * This is the intended way to add an entity to a world.
+     * This also adds the child to the systems it should be part of.
+     * WARNING: This should only be called when the parent is inside a world.
+     *
+     * @param entity  The child entity
+     */
+    public void addChild(Entity entity) {
+        entity.setWorld(this.world);
+        entity.parent = this;
+
+        if (this.lastChild == null) {
+            this.firstChild = entity;
+        } else {
+            this.lastChild.next = entity;
+            entity.prev = this.lastChild;
+        }
+        this.lastChild = entity;
+
+        for (EntitySystem system : this.world.getSystems()) {
+            system.onNewEntityAdded(entity);
+        }
+    }
+
+    /**
+     * The intended way to get rid of en entity.
+     * It recursively calls destroy on its children.
+     * It automatically removes the entity from the applied systems.
+     */
+    public void destroy() {
+        Entity curChild = this.firstChild;
+        while (curChild != null) {
+            Entity nextChild = curChild.next;
+            curChild.destroy();
+            curChild = nextChild;
+        }
+
+        for (EntitySystem system : this.world.getSystems()) {
+            system.onEntityRemoved(this);
+        }
+
+        if (this.prev != null) {
+            this.prev.next = this.next;
+        }
+        if (this.next != null) {
+            this.next.prev = this.prev;
+        }
+        if (this.parent != null) {
+            if (this.parent.firstChild == this) {
+                this.parent.firstChild = this.next;
+            }
+            if (this.parent.lastChild == this) {
+                this.parent.lastChild = this.prev;
+            }
+        }
+        this.parent = null;
+        this.next = null;
+        this.prev = null;
+        this.firstChild = null;
+        this.lastChild = null;
+        this.world = null;
+        this.components.clear();
+    }
+
+    /**
+     * Update the indexNumber of this entity and all its children recursively.
+     *
+     * @param curIndex  should be 0 the first time you call this.
+     * @return  the biggest curIndex of all its children.
+     */
+    public int updateIndex(int curIndex) {
+        this.indexNumber = curIndex;
+        curIndex += sqrtNumber;
+        Entity curChild = this.firstChild;
+        while (curChild != null) {
+            curIndex = curChild.updateIndex(curIndex);
+            curChild = curChild.next;
+        }
+        return curIndex;
+    }
+
+    /**
+     * Get a newly created list of the children of this entity.
+     *
+     * @return  a list of the children of the entity
+     */
+    public List<Entity> getChildren() {
+        List<Entity> result = new ArrayList<>();
+        Entity curChild = this.firstChild;
+        while (curChild != null) {
+            result.add(curChild);
+            curChild = curChild.next;
+        }
+        return result;
+    }
+
+    /**
+     * Returns the parent of this entity, or null if it doesn't have one.
+     *
+     * @return  The parent of this entity.
+     */
+    public Entity getParent() {
+        return this.parent;
+    }
+
+    /**
+     * Get a list of the subtree of this entity recursively.
+     * They are sorted by dfs pre-order.
+     *
+     * @return  a list of all its children and itself.
+     */
+    public List<Entity> getTree() {
+        List<Entity> result = new ArrayList<>();
+        getTree(result);
+        return result;
+    }
+    private void getTree(List<Entity> result) {
+        result.add(this);
+        Entity curChild = this.firstChild;
+        while (curChild != null) {
+            curChild.getTree(result);
+            curChild = curChild.next;
+        }
     }
 
     /**

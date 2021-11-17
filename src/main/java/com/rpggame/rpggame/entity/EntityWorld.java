@@ -7,55 +7,42 @@ import com.rpggame.rpggame.entity.events.AddComponentEvent;
 import com.rpggame.rpggame.entity.events.RemoveComponentEvent;
 import com.rpggame.rpggame.system.EntitySystem;
 import org.apache.commons.lang3.ClassUtils;
-import org.lwjgl.Sys;
 
 import java.util.*;
 
 public class EntityWorld implements InputProcessor {
-    private List<Entity> entities;
+    private final Entity root;
     private List<EntitySystem> entitySystems;
     private Map<Class<?>, Subject<AddComponentEvent>> addComponentSubjects;
     private Map<Class<?>, Subject<RemoveComponentEvent>> removeComponentSubjects;
 
     public EntityWorld() {
-        this.entities = new ArrayList<>();
+        this.root = new Entity();
+        this.root.setWorld(this);
         this.entitySystems = new ArrayList<>();
         this.addComponentSubjects = new HashMap<>();
         this.removeComponentSubjects = new HashMap<>();
     }
 
     /**
-     * The intended way to add an entity to a world.
-     * This also adds the entity to the systems it should be part of.
-     * For better performance should be called after adding all the components to the entity.
+     * Get the root entity of this world.
+     * You can add an entity to the world by adding it as a child of the root.
+     * This entity should never be destroyed.
      *
-     * @param entity  The entity to add to this world.
+     * @return  returns the root entity of the world
      */
-    public void addEntity(Entity entity) {
-        entities.add(entity);
-        entity.setWorld(this);
-
-        for (EntitySystem system : entitySystems) {
-            system.onNewEntityAdded(entity);
-        }
+    public Entity getRoot() {
+        return this.root;
     }
 
     /**
-     * The intended way to remove an entity from a world.
-     * It automatically removes the entity from the applied systems.
+     * Creates a list of all the entities in the world.
+     * Time complexity is O(N) where N is the number of entities.
      *
-     * @param entity  The entity to remove from this world.
+     * @return  a newly created list of all the entities
      */
-    public void removeEntity(Entity entity) {
-        for (EntitySystem system : entitySystems) {
-            system.onEntityRemoved(entity);
-        }
-
-        entities.remove(entity);
-    }
-
     public List<Entity> getEntities() {
-        return Collections.unmodifiableList(entities);
+        return root.getTree();
     }
 
     public List<EntitySystem> getSystems() {

@@ -47,9 +47,9 @@ public class RpgGame extends EntityApplicationAdapter {
 		entity.addComponent(new SpriteComp(player));
 		entity.addComponent(new TransformComp(200, 150));
 		entity.addComponent(new VelocityComp(0, 0));
-		entity.addComponent(new PlayerControllerComp());
+		entity.addComponent(new PlayerControllerComp(4));
 		entity.addComponent(new RectangleCollisionComp(70, 70));
-		entityWorld.addEntity(entity);
+		entityWorld.getRoot().addChild(entity);
 
 		// create box
 		Entity entity2 = new Entity();
@@ -57,7 +57,7 @@ public class RpgGame extends EntityApplicationAdapter {
 		entity2.addComponent(new SpriteComp(box));
 		entity2.addComponent(new TransformComp(400, 400));
 		entity2.addComponent(new RectangleCollisionComp(128, 128));
-		entityWorld.addEntity(entity2);
+		entityWorld.getRoot().addChild(entity2);
 
 		loginScreen = new LoginScreen();
 	}

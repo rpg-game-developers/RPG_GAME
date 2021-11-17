@@ -7,14 +7,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.rpggame.rpggame.component.Component;
 
 public class TileMapComp implements RenderingComp {
     private TiledMap tiledMap;
-    private TiledMapRenderer renderer;
+    private OrthogonalTiledMapRenderer renderer;
     private Texture tiles;
     private TextureRegion[][] splitTiles;
     private int tileWidth;
@@ -39,7 +38,7 @@ public class TileMapComp implements RenderingComp {
         MapLayers layers = tiledMap.getLayers();
         TiledMapTileLayer layer = new TiledMapTileLayer(150, 150, tileWidth, tileHeight);
         layers.add(layer);
-        this.renderer = new OrthoCachedTiledMapRenderer(tiledMap);
+        this.renderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
     public int getTileWidth() {
@@ -66,10 +65,19 @@ public class TileMapComp implements RenderingComp {
         this.margin = margin;
     }
 
+    public TiledMap getTiledMap() {
+        return tiledMap;
+    }
+
+    public TextureRegion[][] getSplitTiles() {
+        return splitTiles;
+    }
+
     @Override
     public void render(OrthographicCamera camera, SpriteBatch batch, double x, double y) {
         if (this.renderer != null) {
             batch.end();
+            camera.update();
             renderer.setView(camera);
             renderer.render();
             batch.begin();

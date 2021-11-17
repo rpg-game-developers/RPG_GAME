@@ -33,42 +33,47 @@ public class EntityApplicationAdapter extends ApplicationAdapter implements Inpu
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        return entityWorld.keyDown(keycode);
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        return false;
+        return entityWorld.keyUp(keycode);
     }
 
     @Override
     public boolean keyTyped(char c) {
-        return false;
+        return entityWorld.keyTyped(c);
     }
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-        return false;
+        entityWorld.touchDown(x, y, pointer, button);
+        return true;
     }
 
     @Override
     public boolean touchUp(int x, int y, int pointer, int button) {
-        return false;
+        entityWorld.touchUp(x, y, pointer, button);
+        return true;
     }
 
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
+        entityWorld.touchDragged(x, y, pointer);
         return true;
     }
 
     @Override
     public boolean mouseMoved(int x, int y) {
-        return false;
+        entityWorld.mouseMoved(x, y);
+        return true;
     }
 
     @Override
     public boolean scrolled(float deltaX, float deltaY) {
-        return false;
+        entityWorld.scrolled(deltaX, deltaY);
+        return true;
     }
 
     @Override

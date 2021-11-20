@@ -6,6 +6,6 @@ import com.rpggame.rpggame.entity.Entity;
 /**
  * All types of loot tables should implement this interface.
  */
-public interface LootTable extends Component {
+public interface LootTableComp extends Component {
 	Entity[] generateLoot();
 }

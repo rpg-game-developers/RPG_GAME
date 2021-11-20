@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class SingleItemLootTableTest {
+public class SingleItemLootTableCompTest {
 
 	private Entity entity1;
 	private Entity entity2;
@@ -37,7 +37,7 @@ public class SingleItemLootTableTest {
 
 	@Test
 	public void generateLoot__NoMapPresent() {
-		final SingleItemLootTable sut = new SingleItemLootTable();
+		final SingleItemLootTableComp sut = new SingleItemLootTableComp();
 		final Entity[] result = sut.generateLoot();
 		basicResultCheck(result);
 		assertNull(result[0]);
@@ -46,7 +46,7 @@ public class SingleItemLootTableTest {
 	@Test
 	public void generateLoot__SinglePossibleItem() {
 		final Map<Entity, Integer> sampleTable = Map.of(this.entity1, 1, this.entity2, 5, this.entity3, 10);
-		final SingleItemLootTable sut = new SingleItemLootTable(sampleTable);
+		final SingleItemLootTableComp sut = new SingleItemLootTableComp(sampleTable);
 		final Entity[] result = sut.generateLoot();
 		basicResultCheck(result);
 		assertNotNull(result[0]);
@@ -55,7 +55,7 @@ public class SingleItemLootTableTest {
 	@Test
 	public void generateLoot__NoPossibleItems() {
 		final Map<Entity, Integer> sampleTable = Map.of(this.entity1, 0, this.entity2, 0, this.entity3, 0);
-		final SingleItemLootTable sut = new SingleItemLootTable(sampleTable);
+		final SingleItemLootTableComp sut = new SingleItemLootTableComp(sampleTable);
 		final Entity[] result = sut.generateLoot();
 		basicResultCheck(result);
 		assertNull(result[0]);
@@ -64,7 +64,7 @@ public class SingleItemLootTableTest {
 	@Test
 	public void generateLoot__CorrectOccurrences() {
 		final Map<Entity, Integer> sampleTable = Map.of(this.entity1, 1, this.entity2, 5, this.entity3, 10);
-		final SingleItemLootTable sut = new SingleItemLootTable(sampleTable);
+		final SingleItemLootTableComp sut = new SingleItemLootTableComp(sampleTable);
 		final List<Entity> results = new ArrayList<>();
 		for(int i = 0; i < 100; i++) {
 			results.add(sut.generateLoot()[0]);

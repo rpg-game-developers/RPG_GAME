@@ -15,15 +15,15 @@ import java.util.Random;
  * Entity : 10
  * }
  */
-public class SingleItemLootTable implements LootTable {
+public class SingleItemLootTableComp implements LootTableComp {
 
 	private final Map<Entity, Integer> table;
 
-	public SingleItemLootTable() {
+	public SingleItemLootTableComp() {
 		this.table = new HashMap<>();
 	}
 
-	public SingleItemLootTable(final Map<Entity, Integer> table) {
+	public SingleItemLootTableComp(final Map<Entity, Integer> table) {
 		this.table = table;
 	}
 
@@ -49,6 +49,6 @@ public class SingleItemLootTable implements LootTable {
 
 	@Override
 	public Component clone() {
-		return new SingleItemLootTable(this.table);
+		return new SingleItemLootTableComp(this.table);
 	}
 }

@@ -5,12 +5,11 @@ import com.badlogic.gdx.Input;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.component.physics.VelocityComp;
 import com.rpggame.rpggame.entity.Entity;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
-@Accessors
+@Getter
+@Setter
 public class PlayerControllerComp implements InputComp {
 
     private float speed;

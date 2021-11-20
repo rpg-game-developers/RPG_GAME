@@ -204,6 +204,22 @@ public class Entity {
     }
 
     /**
+     * Get a list of components in this entity of the type T.
+     *
+     * @param clazz<T>  The class of the components to get
+     * @return          A list of components of type T
+     */
+    public <T> List<T> getComponents(Class<T> clazz) {
+        List<T> result = new ArrayList<>();
+        for (Component comp : components) {
+            if (clazz.isInstance(comp)) {
+                result.add((T) comp);
+            }
+        }
+        return result;
+    }
+
+    /**
      * Add a new component to this entity.
      * This automatically adds this entity to the required systems.
      *

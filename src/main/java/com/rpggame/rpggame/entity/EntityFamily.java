@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EntityFamily {
-    private List<Class<? extends Component>> types;
+    private final List<Class<? extends Component>> types;
 
     public EntityFamily(Class<? extends Component> @NotNull ... types) {
         this.types = new ArrayList<>();
@@ -28,11 +28,6 @@ public class EntityFamily {
      * @return  true if the entity has all the components, otherwise false
      */
     public boolean isMember(Entity entity) {
-        for (Class<?> type : types) {
-            if(!entity.hasComponent(type)) {
-                return false;
-            }
-        }
-        return true;
+        return types.stream().allMatch(entity::hasComponent);
     }
 }

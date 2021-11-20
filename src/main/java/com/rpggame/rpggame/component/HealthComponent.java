@@ -1,18 +1,17 @@
 package com.rpggame.rpggame.component;
 
+import lombok.*;
+
+@Getter
+@AllArgsConstructor
 public class HealthComponent implements Component {
 
+	@Setter
 	private int maxHealth;
 	private int currentHealth;
 
 	public HealthComponent() {
-		this.maxHealth = 0;
-		this.currentHealth = 0;
-	}
-
-	public HealthComponent(int maxHealth, int currentHealth) {
-		this.maxHealth = maxHealth;
-		this.currentHealth = currentHealth;
+		this(0,0);
 	}
 
 	public void damage(int damage) {
@@ -29,23 +28,10 @@ public class HealthComponent implements Component {
 		} else {
 			this.currentHealth += health;
 		}
-
 	}
 
 	public void resetHealth() {
 		this.currentHealth = this.maxHealth;
-	}
-
-	public int getMaxHealth() {
-		return maxHealth;
-	}
-
-	public int getCurrentHealth() {
-		return currentHealth;
-	}
-
-	public void setMaxHealth(int maxHealth) {
-		this.maxHealth = maxHealth;
 	}
 
 	@Override

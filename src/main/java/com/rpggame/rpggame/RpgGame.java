@@ -7,16 +7,15 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.rpggame.rpggame.component.NameComp;
 import com.rpggame.rpggame.component.input.PlayerControllerComp;
 import com.rpggame.rpggame.component.physics.TransformComp;
+import com.rpggame.rpggame.component.physics.VelocityComp;
 import com.rpggame.rpggame.component.physics.collision.RectangleCollisionComp;
 import com.rpggame.rpggame.component.rendering.SpriteComp;
-import com.rpggame.rpggame.component.physics.VelocityComp;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.gui.controller.LoginScreen;
 import com.rpggame.rpggame.system.CollisionSystem;
 import com.rpggame.rpggame.system.InputSystem;
 import com.rpggame.rpggame.system.PhysicsEntitySystem;
 import com.rpggame.rpggame.system.RenderingEntitySystem;
-import com.rpggame.rpggame.gui.view.LoginScreenView;
 
 public class RpgGame extends EntityApplicationAdapter {
 	private Texture player;

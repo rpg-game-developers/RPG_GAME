@@ -1,14 +1,16 @@
 package com.rpggame.rpggame.component.loot;
 
-import static org.junit.Assert.*;
-
 import com.rpggame.rpggame.component.NameComp;
-import com.rpggame.rpggame.component.input.PlayerControllerComp;
 import com.rpggame.rpggame.entity.Entity;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 public class SingleItemLootTableTest {
 

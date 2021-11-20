@@ -1,7 +1,6 @@
 package com.rpggame.rpggame.component.loot;
 
 import com.rpggame.rpggame.component.Component;
-import com.rpggame.rpggame.component.HealthComponent;
 import com.rpggame.rpggame.entity.Entity;
 
 import java.util.HashMap;

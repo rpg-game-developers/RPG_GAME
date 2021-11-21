@@ -3,5 +3,4 @@ var TransformComp = Java.type("com.rpggame.rpggame.component.physics.TransformCo
 function onRender(entity) {
     var trans = entity.getComponent(TransformComp.class);
     var x = trans.getX();
-    trans.setX(x - 1);
 }

@@ -22,9 +22,10 @@ public class RenderingEntitySystem extends EntitySystem {
     public void onRender() {
         batch.begin();
         for (Entity entity : getEntities()) {
-            RenderingComp component = entity.getComponent(RenderingComp.class);
-            TransformComp position = entity.getComponent(TransformComp.class);
-            component.render(camera, batch, position.getX(), position.getY());
+            for (RenderingComp component : entity.getComponents(RenderingComp.class)) {
+                TransformComp position = entity.getComponent(TransformComp.class);
+                component.render(camera, batch, position.getX(), position.getY());
+            }
         }
         batch.end();
     }

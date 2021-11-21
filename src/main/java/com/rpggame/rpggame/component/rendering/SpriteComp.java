@@ -10,6 +10,7 @@ import com.rpggame.rpggame.component.Component;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.lwjgl.system.CallbackI;
 
 @Getter
 @Setter
@@ -25,7 +26,9 @@ public class SpriteComp implements RenderingComp {
     public void render(OrthographicCamera camera, SpriteBatch batch, Matrix3 transform) {
         if (sprite != null) {
             Vector2 tl = new Vector2(0,0).mul(transform);
+            Vector2 tr = new Vector2(sprite.getWidth(), 0).mul(transform);
             Vector2 br = new Vector2(sprite.getWidth(),sprite.getHeight()).mul(transform);
+            Vector2 bl = new Vector2(0, sprite.getHeight()).mul(transform);
 
             vertices[0] = tl.x;
             vertices[1] = tl.y;
@@ -33,8 +36,8 @@ public class SpriteComp implements RenderingComp {
             vertices[3] = 0;
             vertices[4] = 1;
 
-            vertices[5] = tl.x;
-            vertices[6] = br.y;
+            vertices[5] = bl.x;
+            vertices[6] = bl.y;
             vertices[7] = batch.getPackedColor();
             vertices[8] = 0;
             vertices[9] = 0;
@@ -45,8 +48,8 @@ public class SpriteComp implements RenderingComp {
             vertices[13] = 1;
             vertices[14] = 0;
 
-            vertices[15] = br.x;
-            vertices[16] = tl.y;
+            vertices[15] = tr.x;
+            vertices[16] = tr.y;
             vertices[17] = batch.getPackedColor();
             vertices[18] = 1;
             vertices[19] = 1;

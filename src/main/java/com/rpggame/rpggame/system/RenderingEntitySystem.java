@@ -30,7 +30,7 @@ public class RenderingEntitySystem extends EntitySystem {
                 Entity current = entity.getParent();
                 while (current != null) {
                     if (current.hasComponent(TransformComp.class)) {
-                        transform.mul(current.getComponent(TransformComp.class).getMatrix());
+                        transform.mulLeft(current.getComponent(TransformComp.class).getMatrix());
                     }
                     current = current.getParent();
                 }

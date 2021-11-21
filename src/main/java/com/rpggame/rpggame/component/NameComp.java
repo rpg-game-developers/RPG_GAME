@@ -1,21 +1,19 @@
 package com.rpggame.rpggame.component;
 
 import com.google.gson.JsonObject;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class NameComp implements Component {
 
     private String name;
 
     public NameComp() {
         this.name = new String();
-    }
-
-    public NameComp(String name) {
-        this.name = name;
     }
 
     @Override

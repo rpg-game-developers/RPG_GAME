@@ -1,12 +1,14 @@
 package com.rpggame.rpggame.component.loot;
 
+import com.badlogic.gdx.utils.Json;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.entity.Entity;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Generates the loot from a single item loot table which looks something like this:
@@ -55,6 +57,17 @@ public class SingleItemLootTableComp implements LootTableComp {
 
 	@Override
 	public JsonObject toJson() {
-		return null;
+		JsonObject singleItemLootTableJson = new JsonObject();
+		singleItemLootTableJson.addProperty("type", this.getClass().getSimpleName());
+		JsonArray tableJson = new JsonArray();
+		for(Map.Entry<Entity, Integer> entry : table.entrySet()) {
+			JsonObject drop = new JsonObject();
+			drop.addProperty("drop", "/"); // TODO: Change to file path of the entity
+			drop.addProperty("rarity", entry.getValue());
+			tableJson.add(drop);
+		}
+		singleItemLootTableJson.add("table", tableJson);
+		System.out.println(singleItemLootTableJson);
+		return singleItemLootTableJson;
 	}
 }

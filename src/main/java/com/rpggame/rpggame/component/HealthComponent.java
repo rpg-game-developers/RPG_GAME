@@ -37,19 +37,10 @@ public class HealthComponent implements Component {
 		this.currentHealth = this.maxHealth;
 	}
 
-	/**
-	 * Wanted output:
-	 * {
-	 *     "type" : "health",
-	 *     "currentHealth" : X,
-	 *	   "maxHealth" : X
-	 * }
-	 * X is just a placeholder for the data in the variables.
-	 */
 	@Override
 	public JsonObject toJson() {
 		JsonObject healthAsJson = new JsonObject();
-		healthAsJson.addProperty("type", "health");
+		healthAsJson.addProperty("type", this.getClass().getSimpleName());
 		healthAsJson.addProperty("maxHealth", this.maxHealth);
 		healthAsJson.addProperty("currentHealth", this.currentHealth);
 		return healthAsJson;

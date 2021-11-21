@@ -2,6 +2,7 @@ package com.rpggame.rpggame.component;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.rendering.RenderingComp;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.scripting.ScriptManager;
@@ -35,6 +36,11 @@ public class ScriptComp implements RenderingComp {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    @Override
+    public JsonObject toJson() {
+        return new JsonObject();
     }
 
     @Override

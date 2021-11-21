@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.rpggame.rpggame.component.HealthComponent;
 import com.rpggame.rpggame.component.NameComp;
 import com.rpggame.rpggame.component.input.PlayerControllerComp;
 import com.rpggame.rpggame.component.physics.TransformComp;
@@ -48,6 +49,7 @@ public class RpgGame extends EntityApplicationAdapter {
 		entity.addComponent(new VelocityComp(0, 0));
 		entity.addComponent(new PlayerControllerComp(4));
 		entity.addComponent(new RectangleCollisionComp(70, 70));
+		entity.addComponent(new HealthComponent(10,10));
 		entityWorld.getRoot().addChild(entity);
 
 		// create box

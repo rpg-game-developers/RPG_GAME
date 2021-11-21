@@ -1,6 +1,7 @@
 package com.rpggame.rpggame.component.physics;
 
 import com.badlogic.gdx.math.Vector2;
+import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 
 public class TransformComp implements Component {
@@ -41,5 +42,10 @@ public class TransformComp implements Component {
     @Override
     public Component clone() {
         return new TransformComp(position.x, position.y);
+    }
+
+    @Override
+    public JsonObject toJson() {
+        return null;
     }
 }

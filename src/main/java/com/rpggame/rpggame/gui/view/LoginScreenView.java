@@ -74,6 +74,9 @@ public class LoginScreenView {
         this.loginTable.setPosition((this.sw - this.cw) / 2.0f, (this.sh - this.ch) / 2.0f);
     }
 
+    /**
+     * Adds all of the actors to the stage.
+     */
     public void show() {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(loginTable);

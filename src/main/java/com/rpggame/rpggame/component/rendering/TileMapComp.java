@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 
 public class TileMapComp implements RenderingComp {
@@ -101,6 +102,11 @@ public class TileMapComp implements RenderingComp {
     @Override
     public Component clone() {
         return new TileMapComp();
+    }
+
+    @Override
+    public JsonObject toJson() {
+        return null;
     }
 
 }

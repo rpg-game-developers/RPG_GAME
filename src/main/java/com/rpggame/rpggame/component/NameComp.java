@@ -1,6 +1,13 @@
 package com.rpggame.rpggame.component;
 
+import com.google.gson.JsonObject;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class NameComp implements Component {
+
     private String name;
 
     public NameComp() {
@@ -11,12 +18,11 @@ public class NameComp implements Component {
         this.name = name;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public JsonObject toJson() {
+        JsonObject nameCompAsJson = new JsonObject();
+        nameCompAsJson.addProperty("name", this.name);
+        return nameCompAsJson;
     }
 
     @Override

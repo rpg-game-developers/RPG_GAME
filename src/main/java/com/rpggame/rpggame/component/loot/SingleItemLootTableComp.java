@@ -1,5 +1,6 @@
 package com.rpggame.rpggame.component.loot;
 
+import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.entity.Entity;
 
@@ -50,5 +51,10 @@ public class SingleItemLootTableComp implements LootTableComp {
 	@Override
 	public Component clone() {
 		return new SingleItemLootTableComp(this.table);
+	}
+
+	@Override
+	public JsonObject toJson() {
+		return null;
 	}
 }

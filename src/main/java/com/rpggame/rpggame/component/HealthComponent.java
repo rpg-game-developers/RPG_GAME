@@ -1,6 +1,9 @@
 package com.rpggame.rpggame.component;
 
-import lombok.*;
+import com.google.gson.JsonObject;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
@@ -32,6 +35,24 @@ public class HealthComponent implements Component {
 
 	public void resetHealth() {
 		this.currentHealth = this.maxHealth;
+	}
+
+	/**
+	 * Wanted output:
+	 * {
+	 *     "type" : "health",
+	 *     "currentHealth" : X,
+	 *	   "maxHealth" : X
+	 * }
+	 * X is just a placeholder for the data in the variables.
+	 */
+	@Override
+	public JsonObject toJson() {
+		JsonObject healthAsJson = new JsonObject();
+		healthAsJson.addProperty("type", "health");
+		healthAsJson.addProperty("maxHealth", this.maxHealth);
+		healthAsJson.addProperty("currentHealth", this.currentHealth);
+		return healthAsJson;
 	}
 
 	@Override

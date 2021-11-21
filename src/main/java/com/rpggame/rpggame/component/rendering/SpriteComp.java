@@ -3,24 +3,19 @@ package com.rpggame.rpggame.component.rendering;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
 public class SpriteComp implements RenderingComp {
     private Texture sprite;
 
     public SpriteComp() {
-    }
-
-    public SpriteComp(Texture sprite) {
-        this.sprite = sprite;
-    }
-
-    public Texture getSprite() {
-        return sprite;
-    }
-
-    public void setSprite(Texture sprite) {
-        this.sprite = sprite;
     }
 
     @Override
@@ -33,6 +28,12 @@ public class SpriteComp implements RenderingComp {
     @Override
     public Component clone() {
         return new SpriteComp(sprite);
+    }
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject spriteCompAsJson = new JsonObject();
+        return spriteCompAsJson;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.rpggame.rpggame.component.physics;
 
 import com.badlogic.gdx.math.Vector2;
+import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 
 public class VelocityComp implements Component {
@@ -36,6 +37,11 @@ public class VelocityComp implements Component {
 
     public Component clone() {
         return new VelocityComp(velocity.x, velocity.y);
+    }
+
+    @Override
+    public JsonObject toJson() {
+        return null;
     }
 
 }

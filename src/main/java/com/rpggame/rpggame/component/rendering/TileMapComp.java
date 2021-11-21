@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Matrix3;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 
@@ -89,7 +90,7 @@ public class TileMapComp implements RenderingComp {
     }
 
     @Override
-    public void render(OrthographicCamera camera, SpriteBatch batch, double x, double y) {
+    public void render(OrthographicCamera camera, SpriteBatch batch, Matrix3 transform) {
         if (this.renderer != null) {
             batch.end();
             camera.update();

@@ -2,6 +2,7 @@ package com.rpggame.rpggame.system;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix3;
 import com.rpggame.rpggame.component.physics.TransformComp;
 import com.rpggame.rpggame.component.rendering.RenderingComp;
 import com.rpggame.rpggame.entity.Entity;
@@ -22,9 +23,20 @@ public class RenderingEntitySystem extends EntitySystem {
     public void onRender() {
         batch.begin();
         for (Entity entity : getEntities()) {
-            RenderingComp component = entity.getComponent(RenderingComp.class);
-            TransformComp position = entity.getComponent(TransformComp.class);
-            component.render(camera, batch, position.getX(), position.getY());
+            for (RenderingComp component : entity.getComponents(RenderingComp.class)) {
+                TransformComp transformComp = entity.getComponent(TransformComp.class);
+
+                Matrix3 transform = new Matrix3(transformComp.getMatrix());
+                Entity current = entity.getParent();
+                while (current != null) {
+                    if (current.hasComponent(TransformComp.class)) {
+                        transform.mulLeft(current.getComponent(TransformComp.class).getMatrix());
+                    }
+                    current = current.getParent();
+                }
+
+                component.render(camera, batch, transform);
+            }
         }
         batch.end();
     }

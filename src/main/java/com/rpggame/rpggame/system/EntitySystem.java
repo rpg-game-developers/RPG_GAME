@@ -12,15 +12,15 @@ import com.rpggame.rpggame.entity.events.RemoveComponentEvent;
 import java.util.*;
 
 public class EntitySystem implements InputProcessor {
-    private List<Entity> entities;
-    private List<ConnectedObserver<?>> observers;
+    private final List<ConnectedObserver<?>> observers;
     private final EntityFamily family;
+    private Set<Entity> entities;
     private EntityWorld world;
 
     public EntitySystem(EntityFamily family) {
         this.family = family;
         this.observers = new ArrayList<>();
-        entities = new ArrayList<>();
+        this.entities = new TreeSet<>();
     }
 
     /**
@@ -74,8 +74,8 @@ public class EntitySystem implements InputProcessor {
      *
      * @return  An unmodifiable list of all the interesting entities.
      */
-    public List<Entity> getEntities() {
-        return Collections.unmodifiableList(entities);
+    public Set<Entity> getEntities() {
+        return Collections.unmodifiableSet(entities);
     }
 
     /**

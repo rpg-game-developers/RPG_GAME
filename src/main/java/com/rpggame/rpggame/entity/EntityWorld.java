@@ -197,6 +197,14 @@ public class EntityWorld implements InputProcessor {
         }
     }
 
+    /**
+     * Update the entity index number for all entities.
+     * Time complexity O(n)
+     */
+    public void updateEntityIndex() {
+        this.root.updateIndex(0);
+    }
+
     @Override
     public boolean keyDown(int keycode) {
         for (EntitySystem system : entitySystems) {

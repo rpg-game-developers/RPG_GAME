@@ -6,7 +6,7 @@ import com.rpggame.rpggame.system.EntitySystem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Entity {
+public class Entity implements Comparable<Entity> {
     private List<Component> components;
     private EntityWorld world;
 
@@ -65,6 +65,9 @@ public class Entity {
             entity.prev = this.lastChild;
         }
         this.lastChild = entity;
+
+        entity.indexNumber = this.indexNumber + 1;
+        this.world.updateEntityIndex();
 
         for (EntitySystem system : this.world.getSystems()) {
             system.onNewEntityAdded(entity);
@@ -241,6 +244,11 @@ public class Entity {
         if (world != null)
             world.notifyRemoveComponent(clazz, this);
         components.removeIf(clazz::isInstance);
+    }
+
+    @Override
+    public int compareTo(Entity other) {
+        return this.indexNumber - other.indexNumber;
     }
 
     /**

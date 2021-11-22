@@ -75,4 +75,14 @@ public class SingleItemLootTableCompTest {
 		assertTrue(amountEntity3 > amountEntity2);
 		assertTrue(amountEntity2 > amountEntity1);
 	}
+
+	@Test
+	public void toJson__ValuesCorrect() {
+
+	}
+
+	@Test
+	public void toJson__KeysCorrect() {
+
+	}
 }

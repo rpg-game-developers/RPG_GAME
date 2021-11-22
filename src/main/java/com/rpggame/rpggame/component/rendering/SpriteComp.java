@@ -10,7 +10,6 @@ import com.rpggame.rpggame.component.Component;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.lwjgl.system.CallbackI;
 
 @Getter
 @Setter

@@ -37,6 +37,10 @@ public class HealthComponent implements Component {
 		this.currentHealth = this.maxHealth;
 	}
 
+	public void drainHealth() {
+		this.currentHealth = 0;
+	}
+
 	@Override
 	public JsonObject toJson() {
 		JsonObject healthAsJson = new JsonObject();

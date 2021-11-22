@@ -3,8 +3,12 @@ package com.rpggame.rpggame.component.physics;
 import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
+import com.rpggame.rpggame.constants.Constants;
+import lombok.Getter;
 
 public class VelocityComp implements Component {
+
+    @Getter
     private Vector2 velocity;
 
     public VelocityComp() {
@@ -13,10 +17,6 @@ public class VelocityComp implements Component {
 
     public VelocityComp(float x, float y) {
         this.velocity = new Vector2(x,y);
-    }
-
-    public Vector2 getVelocity() {
-        return velocity;
     }
 
     public float getX() {
@@ -41,7 +41,9 @@ public class VelocityComp implements Component {
 
     @Override
     public JsonObject toJson() {
-        return null;
+        JsonObject velocityJson = new JsonObject();
+        velocityJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName()); // TODO: Finish this
+        return velocityJson;
     }
 
 }

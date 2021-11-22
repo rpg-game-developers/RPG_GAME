@@ -14,10 +14,8 @@ import com.rpggame.rpggame.component.physics.collision.RectangleCollisionComp;
 import com.rpggame.rpggame.component.rendering.SpriteComp;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.gui.controller.LoginScreen;
+import com.rpggame.rpggame.repository.EntityAsJsonRepository;
 import com.rpggame.rpggame.system.*;
-import org.lwjgl.Sys;
-
-import java.nio.file.Files;
 
 public class RpgGame extends EntityApplicationAdapter {
 	private Texture player;
@@ -62,6 +60,8 @@ public class RpgGame extends EntityApplicationAdapter {
 		entity2.addComponent(new RectangleCollisionComp(128, 128));
 		entity2.addComponent(new ScriptComp("scripts/test.js"));
 		entityWorld.getRoot().addChild(entity2);
+
+		new EntityAsJsonRepository().loadEntityFromJson("json/entity/test.json");
 
 		loginScreen = new LoginScreen();
 	}

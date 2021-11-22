@@ -1,14 +1,15 @@
 package com.rpggame.rpggame.component.loot;
 
-import com.badlogic.gdx.utils.Json;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.rpggame.rpggame.component.Component;
+import com.rpggame.rpggame.constants.Constants;
 import com.rpggame.rpggame.entity.Entity;
+import lombok.AllArgsConstructor;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Generates the loot from a single item loot table which looks something like this:
@@ -18,16 +19,13 @@ import java.util.*;
  * Entity : 10
  * }
  */
+@AllArgsConstructor
 public class SingleItemLootTableComp implements LootTableComp {
 
 	private final Map<Entity, Integer> table;
 
 	public SingleItemLootTableComp() {
 		this.table = new HashMap<>();
-	}
-
-	public SingleItemLootTableComp(final Map<Entity, Integer> table) {
-		this.table = table;
 	}
 
 	public Map<Entity, Integer> getTable() {
@@ -62,7 +60,7 @@ public class SingleItemLootTableComp implements LootTableComp {
 	@Override
 	public JsonObject toJson() {
 		JsonObject singleItemLootTableJson = new JsonObject();
-		singleItemLootTableJson.addProperty("type", this.getClass().getSimpleName());
+		singleItemLootTableJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
 		JsonArray tableJson = new JsonArray();
 		for(Map.Entry<Entity, Integer> entry : table.entrySet()) {
 			JsonObject drop = new JsonObject();
@@ -71,7 +69,6 @@ public class SingleItemLootTableComp implements LootTableComp {
 			tableJson.add(drop);
 		}
 		singleItemLootTableJson.add("table", tableJson);
-		System.out.println(singleItemLootTableJson);
 		return singleItemLootTableJson;
 	}
 }

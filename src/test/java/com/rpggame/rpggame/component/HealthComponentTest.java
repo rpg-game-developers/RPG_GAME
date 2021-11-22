@@ -1,6 +1,7 @@
 package com.rpggame.rpggame.component;
 
 import com.google.gson.JsonObject;
+import com.rpggame.rpggame.constants.Constants;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,6 +69,7 @@ public class HealthComponentTest {
 		Arrays.stream(classFields)
 				.peek(e-> e.setAccessible(true))
 				.forEach(field -> compareFieldValues(sut, data, field));
+		assertEquals(healthAsJson.get(Constants.BACKEND.TYPE_STRING).getAsString(), HealthComponent.class.getSimpleName());
 	}
 
 	@Test
@@ -75,6 +77,7 @@ public class HealthComponentTest {
 		final HealthComponent sut = new HealthComponent();
 		final JsonObject healthAsJson = sut.toJson();
 		fieldNames.forEach(e -> assertTrue(healthAsJson.keySet().contains(e)));
+		assertTrue(healthAsJson.keySet().contains(Constants.BACKEND.TYPE_STRING));
 	}
 
 }

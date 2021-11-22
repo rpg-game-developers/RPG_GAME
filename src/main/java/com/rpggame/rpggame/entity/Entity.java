@@ -1,13 +1,16 @@
 package com.rpggame.rpggame.entity;
 
+import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
+import com.rpggame.rpggame.repository.EntityAsJsonRepository;
 import com.rpggame.rpggame.system.EntitySystem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Entity implements Comparable<Entity> {
-    private List<Component> components;
+
+    private final List<Component> components;
     private EntityWorld world;
 
     // entities are connected in a linked list like way
@@ -329,5 +332,14 @@ public class Entity implements Comparable<Entity> {
             entity.components.add(comp.clone());
         }
         return entity;
+    }
+
+    /**
+     * Saves an entity in a json file along with its components.
+     */
+    public void saveEntityAsJson(String directory, String filename) {
+        EntityAsJsonRepository jsonRep = new EntityAsJsonRepository();
+        JsonObject jsonObject = jsonRep.saveEntityAsJson(this);
+        jsonRep.writeToFile(jsonObject, directory, filename);
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.component.physics.TransformComp;
+import com.rpggame.rpggame.constants.Constants;
 
 public class RectangleCollisionComp implements CollisionComp {
     private Vector2 size;
@@ -50,7 +51,9 @@ public class RectangleCollisionComp implements CollisionComp {
 
     @Override
     public JsonObject toJson() {
-        return null;
+        JsonObject rectangleCollisionJson = new JsonObject();
+        rectangleCollisionJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
+        return rectangleCollisionJson;
     }
 
 }

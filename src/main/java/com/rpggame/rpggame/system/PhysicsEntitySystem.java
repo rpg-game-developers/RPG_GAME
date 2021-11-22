@@ -38,7 +38,7 @@ public class PhysicsEntitySystem extends EntitySystem {
                 nextTransform.setX(transform.getX() + velocity.getX());
                 nextTransform.setY(transform.getY() + velocity.getY());
             }
-            
+
             transform.setPosition(nextTransform.getPosition());
         }
     }

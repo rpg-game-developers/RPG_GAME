@@ -1,39 +1,49 @@
 package com.rpggame.rpggame.component;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix3;
+import com.badlogic.gdx.Gdx;
 import com.google.gson.JsonObject;
-import com.rpggame.rpggame.component.rendering.RenderingComp;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.scripting.ScriptManager;
 
 import javax.script.Invocable;
-import javax.script.ScriptException;
+import javax.script.ScriptEngine;
 
-public class ScriptComp implements RenderingComp {
+public class ScriptComp implements Component {
 
-    Entity entity;
+    private String filePath;
+    public ScriptEngine engine;
 
     public ScriptComp() {
+        this.filePath = null;
+        this.engine = null;
     }
 
-    public ScriptComp(Entity entity, String script) {
-        this.entity = entity;
-        ScriptManager manager = ScriptManager.getInstance();
-        try {
-            manager.engine.eval(script);
-        } catch (ScriptException se) {
-            System.out.println(se);
+    public ScriptComp(String filePath) {
+        setFilePath(filePath);
+    }
+
+    public void setFilePath(String filePath) {
+        if (!filePath.equals(this.filePath)) {
+            this.filePath = filePath;
+            ScriptManager manager = ScriptManager.getInstance();
+            try {
+                String script = Gdx.files.internal(filePath).readString();
+                this.engine = manager.createJavaScriptEngine();
+                this.engine.eval(script);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 
-    @Override
-    public void render(OrthographicCamera camera, SpriteBatch batch, Matrix3 transform) {
+    public String getFilePath() {
+        return this.filePath;
+    }
+
+    public void update(Entity entity) {
         try {
-            ScriptManager manager = ScriptManager.getInstance();
-            Invocable inv = (Invocable) manager.engine;
-            inv.invokeFunction("onRender", entity);
+            Invocable inv = (Invocable) this.engine;
+            inv.invokeFunction("update", entity);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -46,6 +56,6 @@ public class ScriptComp implements RenderingComp {
 
     @Override
     public Component clone() {
-        return new ScriptComp();
+        return new ScriptComp(this.filePath);
     }
 }

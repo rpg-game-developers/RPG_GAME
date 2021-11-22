@@ -75,6 +75,72 @@ public class Entity implements Comparable<Entity> {
     }
 
     /**
+     * Add an entity before this entity.
+     * This entity will have the same parent.
+     * This is a way to add an entity to a world.
+     * This also adds the child to systems it should be part of.
+     * WARNING: This should only be called when the parent is inside a world
+     *
+     * @param entity  the entity that will go before this entity
+     */
+    public void addPrev(Entity entity) {
+        entity.setWorld(this.world);
+        entity.parent = this.parent;
+        entity.next = this;
+        entity.prev = this.prev;
+
+        if (this.prev != null) {
+            this.prev.next = entity;
+        }
+
+        this.prev = entity;
+
+        if (this.parent != null && this.parent.firstChild == this) {
+            this.parent.firstChild = entity;
+        }
+
+        entity.indexNumber = this.indexNumber + 1;
+        this.world.updateEntityIndex();
+
+        for (EntitySystem system : this.world.getSystems()) {
+            system.onNewEntityAdded(entity);
+        }
+    }
+
+    /**
+     * Add an entity after this entity.
+     * This entity will have the same parent.
+     * This is a way to add an entity to a world.
+     * This also adds the child to systems it should be part of.
+     * WARNING: This should only be called when the parent is inside a world
+     *
+     * @param entity  the entity that will go after this entity
+     */
+    public void addNext(Entity entity) {
+        entity.setWorld(this.world);
+        entity.parent = this.parent;
+        entity.next = this.next;
+        entity.prev = this;
+
+        if (this.next != null) {
+            this.next.prev = entity;
+        }
+
+        this.next = entity;
+
+        if (this.parent != null && this.parent.lastChild == this) {
+            this.parent.lastChild = entity;
+        }
+
+        entity.indexNumber = this.indexNumber + 1;
+        this.world.updateEntityIndex();
+
+        for (EntitySystem system : this.world.getSystems()) {
+            system.onNewEntityAdded(entity);
+        }
+    }
+
+    /**
      * The intended way to get rid of en entity.
      * It recursively calls destroy on its children.
      * It automatically removes the entity from the applied systems.

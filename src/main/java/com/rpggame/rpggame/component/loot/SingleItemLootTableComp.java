@@ -30,6 +30,10 @@ public class SingleItemLootTableComp implements LootTableComp {
 		this.table = table;
 	}
 
+	public Map<Entity, Integer> getTable() {
+		return this.table;
+	}
+
 	@Override
 	public Entity[] generateLoot() {
 		Entity[] loot = new Entity[1];

@@ -1,5 +1,6 @@
 package com.rpggame.rpggame.component.physics.collision;
 
+import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
@@ -33,13 +34,11 @@ public class RectangleCollisionComp implements CollisionComp {
     public boolean checkCollision(TransformComp transform, CollisionComp other, TransformComp otherTransform) {
         if (other instanceof RectangleCollisionComp) {
             RectangleCollisionComp rect = (RectangleCollisionComp) other;
-            Vector2 tl1 = transform.getPosition();
-            Vector2 br1 = new Vector2(tl1).add(size);
-            Vector2 tl2 = otherTransform.getPosition();
-            Vector2 br2 = new Vector2(tl2).add(rect.getSize());
 
-            return  ((tl1.x >= tl2.x && tl1.x < br2.x) || (tl2.x >= tl1.x && tl2.x < br1.x)) &&
-                    ((tl1.y >= tl2.y && tl1.y < br2.y) || (tl2.y >= tl1.y && tl2.y < br1.y));
+            OBB2D a = new OBB2D(this.size, transform.getMatrix());
+            OBB2D b = new OBB2D(rect.size, otherTransform.getMatrix());
+
+            return a.overlaps(b);
         }
         return false;
     }

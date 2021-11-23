@@ -2,7 +2,6 @@ package com.rpggame.rpggame.entity;
 
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
-import com.rpggame.rpggame.controller.Observer;
 import com.rpggame.rpggame.repository.EntityAsJsonRepository;
 import com.rpggame.rpggame.system.EntitySystem;
 
@@ -49,24 +48,32 @@ public class Entity implements Comparable<Entity> {
     }
 
     /**
-     * Setting the world of the entity.
+     * Setting the world of the entity, and all of its children.
      * WARNING: Should normally only be called by EntityWorld and itself.
      *
      * @param world  the new world
      */
     public void setWorld(EntityWorld world) {
+        if (this.world == world)
+            return;
+
         this.world = world;
+        Entity currentChild = this.firstChild;
+        while (currentChild != null) {
+            currentChild.setWorld(this.world);
+            currentChild = currentChild.next;
+        }
     }
 
     /**
      * Makes the other entity a child of this entity.
      * This is the intended way to add an entity to a world.
      * This also adds the child to the systems it should be part of.
-     * WARNING: This should only be called when the parent is inside a world.
      *
      * @param entity  The child entity
      */
     public void addChild(Entity entity) {
+        entity.disconnectFromParent();
         entity.setWorld(this.world);
         entity.parent = this;
 
@@ -79,10 +86,12 @@ public class Entity implements Comparable<Entity> {
         this.lastChild = entity;
 
         entity.indexNumber = this.indexNumber + 1;
-        this.world.updateEntityIndex();
 
-        for (EntitySystem system : this.world.getSystems()) {
-            system.onNewEntityAdded(entity);
+        if (this.world != null) {
+            this.world.updateEntityIndex();
+            for (EntitySystem system : this.world.getSystems()) {
+                system.onNewEntityAdded(entity);
+            }
         }
     }
 
@@ -91,11 +100,11 @@ public class Entity implements Comparable<Entity> {
      * This entity will have the same parent.
      * This is a way to add an entity to a world.
      * This also adds the child to systems it should be part of.
-     * WARNING: This should only be called when the parent is inside a world
      *
      * @param entity  the entity that will go before this entity
      */
     public void addPrev(Entity entity) {
+        entity.disconnectFromParent();
         entity.setWorld(this.world);
         entity.parent = this.parent;
         entity.next = this;
@@ -112,10 +121,12 @@ public class Entity implements Comparable<Entity> {
         }
 
         entity.indexNumber = this.indexNumber + 1;
-        this.world.updateEntityIndex();
 
-        for (EntitySystem system : this.world.getSystems()) {
-            system.onNewEntityAdded(entity);
+        if (this.world != null) {
+            this.world.updateEntityIndex();
+            for (EntitySystem system : this.world.getSystems()) {
+                system.onNewEntityAdded(entity);
+            }
         }
     }
 
@@ -124,11 +135,11 @@ public class Entity implements Comparable<Entity> {
      * This entity will have the same parent.
      * This is a way to add an entity to a world.
      * This also adds the child to systems it should be part of.
-     * WARNING: This should only be called when the parent is inside a world
      *
      * @param entity  the entity that will go after this entity
      */
     public void addNext(Entity entity) {
+        entity.disconnectFromParent();
         entity.setWorld(this.world);
         entity.parent = this.parent;
         entity.next = this.next;
@@ -145,10 +156,12 @@ public class Entity implements Comparable<Entity> {
         }
 
         entity.indexNumber = this.indexNumber + 1;
-        this.world.updateEntityIndex();
 
-        for (EntitySystem system : this.world.getSystems()) {
-            system.onNewEntityAdded(entity);
+        if (this.world != null) {
+            this.world.updateEntityIndex();
+            for (EntitySystem system : this.world.getSystems()) {
+                system.onNewEntityAdded(entity);
+            }
         }
     }
 
@@ -169,6 +182,15 @@ public class Entity implements Comparable<Entity> {
             system.onEntityRemoved(this);
         }
 
+        disconnectFromParent();
+
+        this.components.clear();
+        for (EntityObserver<?> observer : observers) {
+            observer.unsubscribe();
+        }
+    }
+
+    private void disconnectFromParent() {
         if (this.prev != null) {
             this.prev.next = this.next;
         }
@@ -186,14 +208,7 @@ public class Entity implements Comparable<Entity> {
         this.parent = null;
         this.next = null;
         this.prev = null;
-        this.firstChild = null;
-        this.lastChild = null;
         this.world = null;
-        this.components.clear();
-
-        for (EntityObserver<?> observer : observers) {
-            observer.unsubscribe();
-        }
     }
 
     /**
@@ -328,6 +343,16 @@ public class Entity implements Comparable<Entity> {
         components.removeIf(clazz::isInstance);
     }
 
+    /**
+     * Start listening to events of type T.
+     * If the subject entity sends an event of type T,
+     * then the entity you called subscribe from will receive this event.
+     * Then the onNotify method of the observer will be called.
+     *
+     * @param subject  The entity to start listening to for events.
+     * @param observer  The observer that will handle the event
+     * @param <T>  The type of event to listen to
+     */
     public <T> void subscribe(Entity subject, EntityObserver<T> observer) {
         observer.setConnection(this, subject);
         observers.add(observer);
@@ -339,13 +364,25 @@ public class Entity implements Comparable<Entity> {
         entitySubject.subscribe(observer);
     }
 
+    /**
+     * Call this method if you want this entity to stop sending events to this observer.
+     *
+     * @param observer  The observer that was listening to the events.
+     * @param <T>  The type of event this observer was listening to.
+     */
     public <T> void unsubscribe(EntityObserver<T> observer) {
         Class<T> type = observer.getType();
         ((EntitySubject<T>) subjects.get(type)).unsubscribe(observer);
     }
 
-    public <T> void notify(Class<T> type, T event) {
-        ((EntitySubject<T>) subjects.get(type)).notify(event);
+    /**
+     * Notify all interested observers that an event has happened.
+     * This will only notify the observers that are listening for the event of type T.
+     *
+     * @param event  The event to send.
+     */
+    public <T> void notify(T event) {
+        ((EntitySubject<T>) subjects.get(event.getClass())).notify(event);
     }
 
     @Override
@@ -354,7 +391,7 @@ public class Entity implements Comparable<Entity> {
     }
 
     /**
-     * Makes a deep copy of this entity and all its components.
+     * Makes a deep copy of this entity, all its children, and all its components.
      * This new entity is not part of a world.
      *
      * @return  A new entity with a clone of this entity's components.
@@ -364,6 +401,13 @@ public class Entity implements Comparable<Entity> {
         for (Component comp : components) {
             entity.components.add(comp.clone());
         }
+
+        Entity currentChild = this.firstChild;
+        while (currentChild != null) {
+            entity.addChild(currentChild.clone());
+            currentChild = currentChild.next;
+        }
+
         return entity;
     }
 

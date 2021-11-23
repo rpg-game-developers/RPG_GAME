@@ -22,7 +22,7 @@ public class HealthComp implements Component {
 	public void damage(Entity entity, int damage) {
 		if (this.currentHealth - damage <= 0) {
 			this.currentHealth = 0;
-			entity.notify(DeathEvent.class, new DeathEvent());
+			entity.notify(new DeathEvent());
 		} else {
 			this.currentHealth -= damage;
 		}

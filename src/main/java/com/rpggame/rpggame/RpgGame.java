@@ -1,10 +1,12 @@
 package com.rpggame.rpggame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.rpggame.rpggame.component.HealthComponent;
+import com.rpggame.rpggame.component.HealthComp;
 import com.rpggame.rpggame.component.NameComp;
 import com.rpggame.rpggame.component.ScriptComp;
 import com.rpggame.rpggame.component.input.PlayerControllerComp;
@@ -13,11 +15,10 @@ import com.rpggame.rpggame.component.physics.VelocityComp;
 import com.rpggame.rpggame.component.physics.collision.RectangleCollisionComp;
 import com.rpggame.rpggame.component.rendering.SpriteComp;
 import com.rpggame.rpggame.entity.Entity;
+import com.rpggame.rpggame.entity.EntityObserver;
+import com.rpggame.rpggame.event.DeathEvent;
 import com.rpggame.rpggame.gui.controller.LoginScreen;
 import com.rpggame.rpggame.system.*;
-import org.lwjgl.Sys;
-
-import java.nio.file.Files;
 
 public class RpgGame extends EntityApplicationAdapter {
 	private Texture player;
@@ -51,7 +52,7 @@ public class RpgGame extends EntityApplicationAdapter {
 		entity.addComponent(new VelocityComp(0, 0));
 		entity.addComponent(new PlayerControllerComp(4));
 		entity.addComponent(new RectangleCollisionComp(70, 70));
-		entity.addComponent(new HealthComponent(10,10));
+		entity.addComponent(new HealthComp(10,10));
 		entityWorld.getRoot().addChild(entity);
 
 		// create box
@@ -62,6 +63,17 @@ public class RpgGame extends EntityApplicationAdapter {
 		entity2.addComponent(new RectangleCollisionComp(128, 128));
 		entity2.addComponent(new ScriptComp("scripts/test.js"));
 		entityWorld.getRoot().addChild(entity2);
+
+		// respawning when dead
+		entity.subscribe(entity, new EntityObserver<DeathEvent>() {
+			@Override
+			public void onNotify(DeathEvent event) {
+				this.entity.getComponent(TransformComp.class)
+						.setPosition(new Vector2(0.0f, 0.0f));
+				this.entity.getComponent(HealthComp.class)
+						.resetHealth();
+			}
+		});
 
 		loginScreen = new LoginScreen();
 	}

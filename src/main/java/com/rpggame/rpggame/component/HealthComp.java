@@ -1,31 +1,34 @@
 package com.rpggame.rpggame.component;
 
 import com.google.gson.JsonObject;
+import com.rpggame.rpggame.entity.Entity;
+import com.rpggame.rpggame.event.DeathEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
-public class HealthComponent implements Component {
+public class HealthComp implements Component {
 
-	@Setter
 	private int maxHealth;
 	private int currentHealth;
 
-	public HealthComponent() {
+	public HealthComp() {
 		this(0,0);
 	}
 
-	public void damage(int damage) {
+	public void damage(Entity entity, int damage) {
 		if (this.currentHealth - damage <= 0) {
 			this.currentHealth = 0;
+			entity.notify(DeathEvent.class, new DeathEvent());
 		} else {
 			this.currentHealth -= damage;
 		}
 	}
 
-	public void heal(int health) {
+	public void heal(Entity entity, int health) {
 		if(currentHealth + health > maxHealth) {
 			this.currentHealth = maxHealth;
 		} else {
@@ -48,6 +51,6 @@ public class HealthComponent implements Component {
 
 	@Override
 	public Component clone() {
-		return new HealthComponent(this.maxHealth, this.currentHealth);
+		return new HealthComp(this.maxHealth, this.currentHealth);
 	}
 }

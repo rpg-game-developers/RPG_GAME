@@ -1,14 +1,21 @@
 package com.rpggame.rpggame.entity;
 
 import com.rpggame.rpggame.component.Component;
+import com.rpggame.rpggame.controller.Observer;
 import com.rpggame.rpggame.system.EntitySystem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Entity implements Comparable<Entity> {
-    private List<Component> components;
+    private final List<Component> components;
     private EntityWorld world;
+
+    // events
+    private final Map<Class<?>, EntitySubject<?>> subjects;
+    private final List<EntityObserver<?>> observers;
 
     // entities are connected in a linked list like way
     private Entity parent;
@@ -28,6 +35,8 @@ public class Entity implements Comparable<Entity> {
     public Entity() {
         this.world = null;
         this.components = new ArrayList<>();
+        this.subjects = new HashMap<>();
+        this.observers = new ArrayList<>();
         this.parent = null;
         this.next = null;
         this.prev = null;
@@ -178,6 +187,10 @@ public class Entity implements Comparable<Entity> {
         this.lastChild = null;
         this.world = null;
         this.components.clear();
+
+        for (EntityObserver<?> observer : observers) {
+            observer.unsubscribe();
+        }
     }
 
     /**
@@ -310,6 +323,26 @@ public class Entity implements Comparable<Entity> {
         if (world != null)
             world.notifyRemoveComponent(clazz, this);
         components.removeIf(clazz::isInstance);
+    }
+
+    public <T> void subscribe(Entity subject, EntityObserver<T> observer) {
+        observer.setConnection(this, subject);
+        observers.add(observer);
+        Class<T> type = observer.getType();
+        if (!subject.subjects.containsKey(type)) {
+            subject.subjects.put(type, new EntitySubject<T>());
+        }
+        EntitySubject<T> entitySubject = (EntitySubject<T>) subject.subjects.get(type);
+        entitySubject.subscribe(observer);
+    }
+
+    public <T> void unsubscribe(EntityObserver<T> observer) {
+        Class<T> type = observer.getType();
+        ((EntitySubject<T>) subjects.get(type)).unsubscribe(observer);
+    }
+
+    public <T> void notify(Class<T> type, T event) {
+        ((EntitySubject<T>) subjects.get(type)).notify(event);
     }
 
     @Override

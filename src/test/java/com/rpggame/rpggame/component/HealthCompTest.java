@@ -1,6 +1,7 @@
 package com.rpggame.rpggame.component;
 
 import com.google.gson.JsonObject;
+import com.rpggame.rpggame.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,46 +13,54 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class HealthComponentTest {
+public class HealthCompTest {
 
 	private List<String> fieldNames;
 	private Field[] classFields;
 
 	@Before
 	public void init() {
-		classFields = HealthComponent.class.getDeclaredFields();
+		classFields = HealthComp.class.getDeclaredFields();
 		fieldNames = Arrays.stream(classFields).map(Field::getName).collect(Collectors.toList());
 	}
 
 	@Test
 	public void damage() {
-		final HealthComponent sut = new HealthComponent(10, 10);
-		sut.damage(5);
+		Entity entity = new Entity();
+		final HealthComp sut = new HealthComp(10, 10);
+		entity.addComponent(sut);
+		sut.damage(entity, 5);
 		assertEquals(5, sut.getCurrentHealth());
 	}
 
 	@Test
 	public void damage__HealthBelowZero() {
-		final HealthComponent sut = new HealthComponent(10, 10);
-		sut.damage(15);
+		Entity entity = new Entity();
+		final HealthComp sut = new HealthComp(10, 10);
+		entity.addComponent(sut);
+		sut.damage(entity, 15);
 		assertEquals(0, sut.getCurrentHealth());
 	}
 
 	@Test
 	public void heal() {
-		final HealthComponent sut = new HealthComponent(10, 4);
-		sut.heal(3);
+		Entity entity = new Entity();
+		final HealthComp sut = new HealthComp(10, 4);
+		entity.addComponent(sut);
+		sut.heal(entity, 3);
 		assertEquals(7, sut.getCurrentHealth());
 	}
 
 	@Test
 	public void heal__HealOverMaxHealth() {
-		final HealthComponent sut = new HealthComponent(10, 5);
-		sut.heal(25);
+		Entity entity = new Entity();
+		final HealthComp sut = new HealthComp(10, 5);
+		entity.addComponent(sut);
+		sut.heal(entity, 25);
 		assertEquals(sut.getMaxHealth(), sut.getCurrentHealth());
 	}
 
-	private void compareFieldValues(HealthComponent sut, @NotNull Map<String, Object> data, @NotNull Field field) {
+	private void compareFieldValues(HealthComp sut, @NotNull Map<String, Object> data, @NotNull Field field) {
 		try {
 			assertEquals(data.get(field.getName()), field.get(sut).toString());
 		} catch (IllegalAccessException e) {
@@ -61,7 +70,7 @@ public class HealthComponentTest {
 
 	@Test
 	public void toJson__ValuesCorrect() {
-		final HealthComponent sut = new HealthComponent();
+		final HealthComp sut = new HealthComp();
 		final JsonObject healthAsJson = sut.toJson();
 		Map<String, Object> data = healthAsJson.keySet().stream()
 				.collect(Collectors.toMap(e -> e, e-> healthAsJson.get(e).getAsString()));
@@ -72,7 +81,7 @@ public class HealthComponentTest {
 
 	@Test
 	public void toJson__KeysCorrect() {
-		final HealthComponent sut = new HealthComponent();
+		final HealthComp sut = new HealthComp();
 		final JsonObject healthAsJson = sut.toJson();
 		fieldNames.forEach(e -> assertTrue(healthAsJson.keySet().contains(e)));
 	}

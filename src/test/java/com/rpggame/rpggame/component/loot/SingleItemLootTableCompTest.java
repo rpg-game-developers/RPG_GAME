@@ -97,11 +97,12 @@ public class SingleItemLootTableCompTest {
 		final Map<Entity, Integer> sampleTable = Map.of(this.entity1, 1, this.entity2, 5, this.entity3, 10);
 		final SingleItemLootTableComp sut = new SingleItemLootTableComp(sampleTable);
 		JsonObject lootTableJson = sut.toJson();
+		assertTrue(lootTableJson.keySet().contains(Constants.JSON_KEYS.TYPE_STRING));
 		Arrays.stream(classFields).filter(e -> (e.getModifiers()& Modifier.TRANSIENT)==Modifier.TRANSIENT).forEach(e -> {
 			assertTrue(lootTableJson.keySet().contains(e.toString()));
 			JsonArray asJsonArray = lootTableJson.getAsJsonArray(e.toString());
 			assertTrue(asJsonArray.size() > 0);
 		});
-		assertTrue(lootTableJson.keySet().contains(Constants.BACKEND.TYPE_STRING));
+		assertTrue(lootTableJson.keySet().contains(Constants.JSON_KEYS.TYPE_STRING));
 	}
 }

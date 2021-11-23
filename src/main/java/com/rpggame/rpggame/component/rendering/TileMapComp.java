@@ -93,7 +93,7 @@ public class TileMapComp implements RenderingComp {
     @Override
     public JsonObject toJson() {
         JsonObject tileMapJson = new JsonObject();
-        tileMapJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
+        tileMapJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
         return tileMapJson;
     }
 

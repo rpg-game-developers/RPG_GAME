@@ -1,0 +1,62 @@
+{
+  "extends":[
+
+  ],
+  "components":[
+    {
+      "type":"NameComp",
+      "name":"Player"
+    },
+    {
+      "type":"SpriteComp",
+      "sprite":"/"
+    },
+    {
+      "type":"TransformComp"
+    },
+    {
+      "type":"VelocityComp"
+    },
+    {
+      "type":"PlayerControllerComp"
+    },
+    {
+      "type":"RectangleCollisionComp"
+    },
+    {
+      "type":"HealthComponent",
+      "maxHealth":10,
+      "currentHealth":10
+    }
+  ],
+  "children":[
+    {
+      "extends":[
+
+      ],
+      "components":[
+        {
+          "type":"NameComp",
+          "name":"Box"
+        },
+        {
+          "type":"SpriteComp",
+          "sprite":"/"
+        },
+        {
+          "type":"TransformComp"
+        },
+        {
+          "type":"RectangleCollisionComp"
+        },
+        {
+          "type":"ScriptComp",
+          "script":"scripts/test.js"
+        }
+      ],
+      "children":[
+
+      ]
+    }
+  ]
+}

@@ -60,15 +60,15 @@ public class SingleItemLootTableComp implements LootTableComp {
 	@Override
 	public JsonObject toJson() {
 		JsonObject singleItemLootTableJson = new JsonObject();
-		singleItemLootTableJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
+		singleItemLootTableJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
 		JsonArray tableJson = new JsonArray();
 		for(Map.Entry<Entity, Integer> entry : table.entrySet()) {
 			JsonObject drop = new JsonObject();
-			drop.addProperty("drop", "/"); // TODO: Change to file path of the entity
-			drop.addProperty("rarity", entry.getValue());
+			drop.addProperty(Constants.JSON_KEYS.DROP_STRING, "/"); // TODO: Change to file path of the entity
+			drop.addProperty(Constants.JSON_KEYS.RARITY_STRING, entry.getValue());
 			tableJson.add(drop);
 		}
-		singleItemLootTableJson.add("table", tableJson);
+		singleItemLootTableJson.add(Constants.JSON_KEYS.TABLE_STRING, tableJson);
 		return singleItemLootTableJson;
 	}
 }

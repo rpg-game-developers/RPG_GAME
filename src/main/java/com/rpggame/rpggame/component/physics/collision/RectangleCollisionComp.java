@@ -51,7 +51,7 @@ public class RectangleCollisionComp implements CollisionComp {
     @Override
     public JsonObject toJson() {
         JsonObject rectangleCollisionJson = new JsonObject();
-        rectangleCollisionJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
+        rectangleCollisionJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
         return rectangleCollisionJson;
     }
 

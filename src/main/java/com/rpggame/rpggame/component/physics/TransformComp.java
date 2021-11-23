@@ -1,14 +1,10 @@
 package com.rpggame.rpggame.component.physics;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.constants.Constants;
-import org.lwjgl.system.MathUtil;
-
-import javax.management.ValueExp;
 
 public class TransformComp implements Component {
     private final Vector2 position;
@@ -90,7 +86,7 @@ public class TransformComp implements Component {
     @Override
     public JsonObject toJson() {
         JsonObject transformCompJson = new JsonObject();
-        transformCompJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
+        transformCompJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
         return transformCompJson;
     }
 }

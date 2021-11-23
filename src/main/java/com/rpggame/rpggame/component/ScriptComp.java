@@ -51,8 +51,8 @@ public class ScriptComp implements Component {
     @Override
     public JsonObject toJson() {
         JsonObject scriptCompAsJson = new JsonObject();
-        scriptCompAsJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
-        scriptCompAsJson.addProperty("script", this.filePath);
+        scriptCompAsJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
+        scriptCompAsJson.addProperty(Constants.JSON_KEYS.SCRIPT_STRING, this.filePath);
         return scriptCompAsJson;
     }
 

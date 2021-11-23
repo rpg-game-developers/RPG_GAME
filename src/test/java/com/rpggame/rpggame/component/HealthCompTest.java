@@ -78,7 +78,7 @@ public class HealthCompTest {
 		Arrays.stream(classFields)
 				.peek(e-> e.setAccessible(true))
 				.forEach(field -> compareFieldValues(sut, data, field));
-		assertEquals(healthAsJson.get(Constants.BACKEND.TYPE_STRING).getAsString(), HealthComp.class.getSimpleName());
+		assertEquals(healthAsJson.get(Constants.JSON_KEYS.TYPE_STRING).getAsString(), HealthComp.class.getSimpleName());
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class HealthCompTest {
 		final HealthComp sut = new HealthComp();
 		final JsonObject healthAsJson = sut.toJson();
 		fieldNames.forEach(e -> assertTrue(healthAsJson.keySet().contains(e)));
-		assertTrue(healthAsJson.keySet().contains(Constants.BACKEND.TYPE_STRING));
+		assertTrue(healthAsJson.keySet().contains(Constants.JSON_KEYS.TYPE_STRING));
 	}
 
 }

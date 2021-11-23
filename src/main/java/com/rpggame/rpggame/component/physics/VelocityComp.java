@@ -42,7 +42,7 @@ public class VelocityComp implements Component {
     @Override
     public JsonObject toJson() {
         JsonObject velocityJson = new JsonObject();
-        velocityJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName()); // TODO: Finish this
+        velocityJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName()); // TODO: Finish this
         return velocityJson;
     }
 

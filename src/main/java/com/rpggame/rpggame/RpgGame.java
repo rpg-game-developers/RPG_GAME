@@ -75,7 +75,6 @@ public class RpgGame extends EntityApplicationAdapter {
 						.resetHealth();
 			}
 		});
-		new EntityAsJsonRepository().loadEntityFromJson("json/entity/test.json");
 
 		loginScreen = new LoginScreen();
 	}

@@ -3,7 +3,7 @@ package com.rpggame.rpggame.component.loot;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.rpggame.rpggame.component.HealthComponent;
+import com.rpggame.rpggame.component.HealthComp;
 import com.rpggame.rpggame.component.NameComp;
 import com.rpggame.rpggame.constants.Constants;
 import com.rpggame.rpggame.entity.Entity;

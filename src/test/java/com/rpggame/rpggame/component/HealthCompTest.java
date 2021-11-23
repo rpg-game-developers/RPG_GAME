@@ -78,7 +78,7 @@ public class HealthCompTest {
 		Arrays.stream(classFields)
 				.peek(e-> e.setAccessible(true))
 				.forEach(field -> compareFieldValues(sut, data, field));
-		assertEquals(healthAsJson.get(Constants.BACKEND.TYPE_STRING).getAsString(), HealthComponent.class.getSimpleName());
+		assertEquals(healthAsJson.get(Constants.BACKEND.TYPE_STRING).getAsString(), HealthComp.class.getSimpleName());
 	}
 
 	@Test

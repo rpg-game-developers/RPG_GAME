@@ -7,19 +7,20 @@ import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
+import com.rpggame.rpggame.constants.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class SpriteComp implements RenderingComp {
-    private Texture sprite;
-    private final static float[] vertices = new float[20];
 
-    public SpriteComp() {
-    }
+    private transient Texture sprite;
+    private transient final static float[] vertices = new float[20];
 
     @Override
     public void render(OrthographicCamera camera, SpriteBatch batch, Matrix3 transform) {
@@ -65,6 +66,8 @@ public class SpriteComp implements RenderingComp {
     @Override
     public JsonObject toJson() {
         JsonObject spriteCompAsJson = new JsonObject();
+        spriteCompAsJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
+        spriteCompAsJson.addProperty("sprite", "/"); // TODO: Change with the filepath of the sprite.
         return spriteCompAsJson;
     }
 

@@ -12,14 +12,23 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix3;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
+import com.rpggame.rpggame.constants.Constants;
+import lombok.Getter;
+import lombok.Setter;
 
 public class TileMapComp implements RenderingComp {
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer renderer;
     private Texture tiles;
     private TextureRegion[][] splitTiles;
+    @Getter
+    @Setter
     private int tileWidth;
+    @Getter
+    @Setter
     private int tileHeight;
+    @Getter
+    @Setter
     private int margin;
 
     public TileMapComp() {
@@ -41,30 +50,6 @@ public class TileMapComp implements RenderingComp {
         TiledMapTileLayer layer = new TiledMapTileLayer(150, 150, tileWidth, tileHeight);
         layers.add(layer);
         this.renderer = new OrthogonalTiledMapRenderer(tiledMap);
-    }
-
-    public int getTileWidth() {
-        return tileWidth;
-    }
-
-    public void setTileWidth(int tileWidth) {
-        this.tileWidth = tileWidth;
-    }
-
-    public int getTileHeight() {
-        return tileHeight;
-    }
-
-    public void setTileHeight(int tileHeight) {
-        this.tileHeight = tileHeight;
-    }
-
-    public int getMargin() {
-        return margin;
-    }
-
-    public void setMargin(int margin) {
-        this.margin = margin;
     }
 
     public TiledMap getTiledMap() {
@@ -107,7 +92,9 @@ public class TileMapComp implements RenderingComp {
 
     @Override
     public JsonObject toJson() {
-        return null;
+        JsonObject tileMapJson = new JsonObject();
+        tileMapJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
+        return tileMapJson;
     }
 
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
+import com.rpggame.rpggame.constants.Constants;
 import org.lwjgl.system.MathUtil;
 
 import javax.management.ValueExp;
@@ -88,6 +89,8 @@ public class TransformComp implements Component {
 
     @Override
     public JsonObject toJson() {
-        return null;
+        JsonObject transformCompJson = new JsonObject();
+        transformCompJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
+        return transformCompJson;
     }
 }

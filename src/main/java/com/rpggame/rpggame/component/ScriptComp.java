@@ -2,16 +2,19 @@ package com.rpggame.rpggame.component;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.JsonObject;
+import com.rpggame.rpggame.constants.Constants;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.scripting.ScriptManager;
+import lombok.Getter;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 
 public class ScriptComp implements Component {
 
+    @Getter
     private String filePath;
-    public ScriptEngine engine;
+    public transient ScriptEngine engine;
 
     public ScriptComp() {
         this.filePath = null;
@@ -36,10 +39,6 @@ public class ScriptComp implements Component {
         }
     }
 
-    public String getFilePath() {
-        return this.filePath;
-    }
-
     public void update(Entity entity) {
         try {
             Invocable inv = (Invocable) this.engine;
@@ -51,7 +50,10 @@ public class ScriptComp implements Component {
 
     @Override
     public JsonObject toJson() {
-        return new JsonObject();
+        JsonObject scriptCompAsJson = new JsonObject();
+        scriptCompAsJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
+        scriptCompAsJson.addProperty("script", this.filePath);
+        return scriptCompAsJson;
     }
 
     @Override

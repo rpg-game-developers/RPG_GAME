@@ -1,14 +1,19 @@
 package com.rpggame.rpggame.component.loot;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.rpggame.rpggame.component.HealthComponent;
 import com.rpggame.rpggame.component.NameComp;
+import com.rpggame.rpggame.constants.Constants;
 import com.rpggame.rpggame.entity.Entity;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -18,8 +23,14 @@ public class SingleItemLootTableCompTest {
 	private Entity entity2;
 	private Entity entity3;
 
+	private List<String> fieldNames;
+	private Field[] classFields;
+
 	@Before
 	public void init() {
+		classFields = SingleItemLootTableComp.class.getDeclaredFields();
+		fieldNames = Arrays.stream(classFields).map(Field::getName).collect(Collectors.toList());
+
 		entity1 = new Entity();
 		entity1.addComponent(new NameComp("entity1"));
 
@@ -83,6 +94,14 @@ public class SingleItemLootTableCompTest {
 
 	@Test
 	public void toJson__KeysCorrect() {
-
+		final Map<Entity, Integer> sampleTable = Map.of(this.entity1, 1, this.entity2, 5, this.entity3, 10);
+		final SingleItemLootTableComp sut = new SingleItemLootTableComp(sampleTable);
+		JsonObject lootTableJson = sut.toJson();
+		Arrays.stream(classFields).filter(e -> (e.getModifiers()& Modifier.TRANSIENT)==Modifier.TRANSIENT).forEach(e -> {
+			assertTrue(lootTableJson.keySet().contains(e.toString()));
+			JsonArray asJsonArray = lootTableJson.getAsJsonArray(e.toString());
+			assertTrue(asJsonArray.size() > 0);
+		});
+		assertTrue(lootTableJson.keySet().contains(Constants.BACKEND.TYPE_STRING));
 	}
 }

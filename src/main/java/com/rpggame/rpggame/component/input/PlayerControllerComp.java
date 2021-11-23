@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.component.physics.VelocityComp;
+import com.rpggame.rpggame.constants.Constants;
 import com.rpggame.rpggame.entity.Entity;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,7 +55,9 @@ public class PlayerControllerComp implements InputComp {
 
     @Override
     public JsonObject toJson() {
-        return null;
+        JsonObject playerControllerJson = new JsonObject();
+        playerControllerJson.addProperty(Constants.BACKEND.TYPE_STRING, this.getClass().getSimpleName());
+        return playerControllerJson;
     }
 
 

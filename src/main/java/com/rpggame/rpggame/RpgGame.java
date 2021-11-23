@@ -18,6 +18,7 @@ import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.entity.EntityObserver;
 import com.rpggame.rpggame.event.DeathEvent;
 import com.rpggame.rpggame.gui.controller.LoginScreen;
+import com.rpggame.rpggame.repository.EntityAsJsonRepository;
 import com.rpggame.rpggame.system.*;
 
 public class RpgGame extends EntityApplicationAdapter {
@@ -74,6 +75,7 @@ public class RpgGame extends EntityApplicationAdapter {
 						.resetHealth();
 			}
 		});
+		new EntityAsJsonRepository().loadEntityFromJson("json/entity/test.json");
 
 		loginScreen = new LoginScreen();
 	}

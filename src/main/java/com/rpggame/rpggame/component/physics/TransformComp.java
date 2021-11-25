@@ -4,12 +4,10 @@ import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.constants.Constants;
 import com.rpggame.rpggame.entity.Entity;
-
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
 
 public class TransformComp implements Component {
     private final Vector2 position;
@@ -38,7 +36,7 @@ public class TransformComp implements Component {
         return this.position;
     }
 
-    public void setPosition(Vector2 nextPosition) {
+    public void setPosition(@NotNull Vector2 nextPosition) {
         this.position.x = nextPosition.x;
         this.position.y = nextPosition.y;
     }

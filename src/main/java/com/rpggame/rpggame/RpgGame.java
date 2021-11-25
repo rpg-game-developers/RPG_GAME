@@ -56,8 +56,9 @@ public class RpgGame extends EntityApplicationAdapter {
 
 		loginScreen = new LoginScreen();
 
-		JsonObject json = EntityAsJsonRepository.saveEntityAsJson(entityWorld.getRoot());
-		EntityAsJsonRepository.writeToFile(json, "json/entity", "test");
+		JsonObject json = EntityAsJsonRepository.loadJsonObjectFromFile("json/entity/test.json");
+		Entity loadedEntity = EntityAsJsonRepository.loadEntity(json);
+		loadedEntity.saveEntityAsJson("json/entity", "loaded");
 	}
 
 	@Override

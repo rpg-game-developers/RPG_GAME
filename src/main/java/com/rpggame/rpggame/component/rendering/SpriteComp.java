@@ -69,7 +69,7 @@ public class SpriteComp implements RenderingComp {
     public JsonObject toJson() {
         JsonObject spriteCompAsJson = new JsonObject();
         spriteCompAsJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
-        spriteCompAsJson.addProperty("sprite", sprite); // TODO: Change with the filepath of the sprite.
+        spriteCompAsJson.addProperty(Constants.JSON_KEYS.SPRITE_STRING, sprite); // TODO: Change with the filepath of the sprite.
         return spriteCompAsJson;
     }
 

@@ -1,6 +1,7 @@
 package com.rpggame.rpggame.repository;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -20,6 +21,7 @@ import com.rpggame.rpggame.constants.Constants;
 import com.rpggame.rpggame.entity.Entity;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -27,7 +29,7 @@ import java.io.FileReader;
 @NoArgsConstructor
 public class EntityAsJsonRepository {
 
-	public static Entity loadEntity(JsonObject jsonObject) {
+	public static @NotNull Entity loadEntity(@NotNull JsonObject jsonObject) {
 		Entity mainEntity = new Entity();
 		JsonArray components = jsonObject.getAsJsonArray("components");
 		if(components.size() > 0) {
@@ -55,19 +57,46 @@ public class EntityAsJsonRepository {
 						mainEntity.addComponent(tileMapComp);
 						break;
 					case "SpriteComp" :
-						SpriteComp spriteComp = new SpriteComp(); // TODO: load in the sprite
+						SpriteComp spriteComp = new SpriteComp(
+								asJsonObject.get(Constants.JSON_KEYS.SPRITE_STRING).getAsString());
 						mainEntity.addComponent(spriteComp);
 						break;
 					case "VelocityComp" :
-						VelocityComp velocityComp = new VelocityComp();
+						JsonArray velocities = asJsonObject.getAsJsonArray(Constants.JSON_KEYS.VELOCITY_STRING);
+						int[] velocityArray = new int[2];
+						for(int i=0; i<velocities.size(); i++) {
+							velocityArray[i] = velocities.get(i).getAsInt();
+						}
+						VelocityComp velocityComp = new VelocityComp(
+								velocityArray[0], velocityArray[1]
+						);
 						mainEntity.addComponent(velocityComp);
 						break;
 					case "TransformComp" :
-						TransformComp transformComp = new TransformComp();
+						JsonArray transformPositions = asJsonObject.getAsJsonArray(Constants.JSON_KEYS.POSITION_STRING);
+						JsonArray transformScales = asJsonObject.getAsJsonArray(Constants.JSON_KEYS.SCALE_STRING);
+						float[] positions = new float[2];
+						float[] scales = new float[2];
+						for(int i=0; i<transformPositions.size(); i++) {
+							positions[i] = transformPositions.get(i).getAsFloat();
+						}
+						for(int i=0; i<transformScales.size(); i++) {
+							scales[i] = transformScales.get(i).getAsFloat();
+						}
+						Vector2 position = new Vector2(positions[0], positions[1]);
+						Vector2 scale = new Vector2(scales[0], scales[1]);
+						TransformComp transformComp = new TransformComp(
+								position, scale, asJsonObject.get(Constants.JSON_KEYS.ROTATION_STRING).getAsFloat());
 						mainEntity.addComponent(transformComp);
 						break;
 					case "RectangleCollisionComp" :
-						RectangleCollisionComp rectangleCollisionComp = new RectangleCollisionComp();
+						JsonArray collisions = asJsonObject.getAsJsonArray(Constants.JSON_KEYS.RECTANGLE_SIZE_STRING);
+						Float[] sizes = new Float[2];
+						for(int i=0; i < collisions.size(); i++) {
+							sizes[i] = collisions.get(i).getAsFloat();
+						}
+						Vector2 size = new Vector2(sizes[0], sizes[1]);
+						RectangleCollisionComp rectangleCollisionComp = new RectangleCollisionComp(size);
 						mainEntity.addComponent(rectangleCollisionComp);
 						break;
 					case "SingleItemLootTableComp" :
@@ -75,7 +104,9 @@ public class EntityAsJsonRepository {
 						mainEntity.addComponent(singleItemLootTableComp);
 						break;
 					case "PlayerControllerComp" :
-						PlayerControllerComp playerControllerComp = new PlayerControllerComp();
+						PlayerControllerComp playerControllerComp = new PlayerControllerComp(
+								asJsonObject.get(Constants.JSON_KEYS.SPEED_STRING).getAsFloat()
+						);
 						mainEntity.addComponent(playerControllerComp);
 						break;
 				}
@@ -90,7 +121,7 @@ public class EntityAsJsonRepository {
 		return mainEntity;
 	}
 
-	public static JsonObject loadJsonObjectFromFile(String filePath) {
+	public static @Nullable JsonObject loadJsonObjectFromFile(String filePath) {
 		JsonParser jsonParser = new JsonParser();
 		try {
 			return (JsonObject) jsonParser.parse(new FileReader(filePath));
@@ -100,7 +131,7 @@ public class EntityAsJsonRepository {
 		}
 	}
 
-	public static JsonObject saveEntityAsJson(@NotNull Entity entity) {
+	public static @NotNull JsonObject saveEntityAsJson(@NotNull Entity entity) {
 		JsonObject entityAsJson = new JsonObject();
 		entityAsJson.add("extends", new JsonArray());
 		JsonArray entityComponents = new JsonArray();

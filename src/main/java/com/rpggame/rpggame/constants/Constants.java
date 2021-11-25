@@ -17,5 +17,6 @@ public interface Constants {
 		String VELOCITY_STRING = "velocity";
 		String RECTANGLE_SIZE_STRING = "size";
 		String SPEED_STRING = "speed";
+		String SPRITE_STRING = "sprite";
 	}
 }

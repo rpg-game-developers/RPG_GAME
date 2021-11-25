@@ -2,10 +2,14 @@ package com.rpggame.rpggame.component.physics;
 
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.constants.Constants;
 import com.rpggame.rpggame.entity.Entity;
+
+import java.util.ArrayList;
 
 public class TransformComp implements Component {
     private final Vector2 position;
@@ -98,8 +102,21 @@ public class TransformComp implements Component {
 
     @Override
     public JsonObject toJson() {
-        JsonObject transformCompJson = new JsonObject();
-        transformCompJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
-        return transformCompJson;
+        JsonObject transformJson = new JsonObject();
+        transformJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
+
+        JsonArray jsonPosition = new JsonArray();
+        jsonPosition.add(this.position.x);
+        jsonPosition.add(this.position.y);
+        transformJson.add(Constants.JSON_KEYS.POSITION_STRING, jsonPosition);
+
+        JsonArray jsonScale = new JsonArray();
+        jsonScale.add(this.scale.x);
+        jsonScale.add(this.scale.y);
+        transformJson.add(Constants.JSON_KEYS.SCALE_STRING, jsonScale);
+
+        transformJson.addProperty(Constants.JSON_KEYS.ROTATION_STRING, this.rotation);
+
+        return transformJson;
     }
 }

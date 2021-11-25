@@ -7,12 +7,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.rpggame.rpggame.entity.EntityWorld;
+import com.rpggame.rpggame.system.SpriteManager;
 
 public class EntityApplicationAdapter extends ApplicationAdapter implements InputProcessor {
     protected OrthographicCamera camera;
     protected Viewport viewport;
     protected EntityWorld entityWorld;
     protected SpriteBatch batch;
+    protected SpriteManager sprites;
 
     public void create() {
         camera = new OrthographicCamera();
@@ -20,6 +22,7 @@ public class EntityApplicationAdapter extends ApplicationAdapter implements Inpu
         viewport = new ScreenViewport(camera);
         entityWorld = new EntityWorld();
         batch = new SpriteBatch();
+        sprites = new SpriteManager();
     }
 
     public OrthographicCamera getCamera() {
@@ -36,6 +39,10 @@ public class EntityApplicationAdapter extends ApplicationAdapter implements Inpu
 
     public SpriteBatch getSpriteBatch() {
         return this.batch;
+    }
+
+    public SpriteManager getSprites() {
+        return sprites;
     }
 
     @Override
@@ -87,5 +94,10 @@ public class EntityApplicationAdapter extends ApplicationAdapter implements Inpu
     public void resize (int width, int height) {
         viewport.update(width, height);
     }
-    
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        sprites.dispose();
+    }
 }

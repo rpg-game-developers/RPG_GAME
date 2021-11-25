@@ -11,5 +11,11 @@ public interface Constants {
 		String DROP_STRING = "drop";
 		String RARITY_STRING = "rarity";
 		String TABLE_STRING = "table";
+		String POSITION_STRING = "position";
+		String SCALE_STRING = "scale";
+		String ROTATION_STRING = "rotation";
+		String VELOCITY_STRING = "velocity";
+		String RECTANGLE_SIZE_STRING = "size";
+		String SPEED_STRING = "speed";
 	}
 }

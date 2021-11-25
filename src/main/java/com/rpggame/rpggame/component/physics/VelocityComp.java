@@ -1,6 +1,7 @@
 package com.rpggame.rpggame.component.physics;
 
 import com.badlogic.gdx.math.Vector2;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.constants.Constants;
@@ -42,7 +43,14 @@ public class VelocityComp implements Component {
     @Override
     public JsonObject toJson() {
         JsonObject velocityJson = new JsonObject();
-        velocityJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName()); // TODO: Finish this
+
+        velocityJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
+
+        JsonArray jsonVelocity = new JsonArray();
+        jsonVelocity.add(this.velocity.x);
+        jsonVelocity.add(this.velocity.y);
+        velocityJson.add(Constants.JSON_KEYS.VELOCITY_STRING, jsonVelocity);
+
         return velocityJson;
     }
 

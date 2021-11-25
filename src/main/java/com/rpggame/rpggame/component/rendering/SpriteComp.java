@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.constants.Constants;
+import com.rpggame.rpggame.system.SpriteManager;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,16 +20,17 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SpriteComp implements RenderingComp {
 
-    private transient Texture sprite;
+    private String sprite;
     private transient final static float[] vertices = new float[20];
 
     @Override
-    public void render(OrthographicCamera camera, SpriteBatch batch, Matrix3 transform) {
+    public void render(SpriteManager sprites, OrthographicCamera camera, SpriteBatch batch, Matrix3 transform) {
         if (sprite != null) {
+            Texture texture = sprites.getSprite(sprite);
             Vector2 tl = new Vector2(0,0).mul(transform);
-            Vector2 tr = new Vector2(sprite.getWidth(), 0).mul(transform);
-            Vector2 br = new Vector2(sprite.getWidth(),sprite.getHeight()).mul(transform);
-            Vector2 bl = new Vector2(0, sprite.getHeight()).mul(transform);
+            Vector2 tr = new Vector2(texture.getWidth(), 0).mul(transform);
+            Vector2 br = new Vector2(texture.getWidth(),texture.getHeight()).mul(transform);
+            Vector2 bl = new Vector2(0, texture.getHeight()).mul(transform);
 
             vertices[0] = tl.x;
             vertices[1] = tl.y;
@@ -54,7 +56,7 @@ public class SpriteComp implements RenderingComp {
             vertices[18] = 1;
             vertices[19] = 1;
 
-            batch.draw(sprite, vertices, 0, 20);
+            batch.draw(texture, vertices, 0, 20);
         }
     }
 
@@ -67,7 +69,7 @@ public class SpriteComp implements RenderingComp {
     public JsonObject toJson() {
         JsonObject spriteCompAsJson = new JsonObject();
         spriteCompAsJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
-        spriteCompAsJson.addProperty("sprite", "/"); // TODO: Change with the filepath of the sprite.
+        spriteCompAsJson.addProperty("sprite", sprite); // TODO: Change with the filepath of the sprite.
         return spriteCompAsJson;
     }
 

@@ -2,6 +2,7 @@ package com.rpggame.rpggame.component.physics.collision;
 
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.component.physics.TransformComp;
@@ -51,7 +52,14 @@ public class RectangleCollisionComp implements CollisionComp {
     @Override
     public JsonObject toJson() {
         JsonObject rectangleCollisionJson = new JsonObject();
+
         rectangleCollisionJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
+
+        JsonArray jsonSize = new JsonArray();
+        jsonSize.add(this.size.x);
+        jsonSize.add(this.size.y);
+        rectangleCollisionJson.add(Constants.JSON_KEYS.RECTANGLE_SIZE_STRING, jsonSize);
+
         return rectangleCollisionJson;
     }
 

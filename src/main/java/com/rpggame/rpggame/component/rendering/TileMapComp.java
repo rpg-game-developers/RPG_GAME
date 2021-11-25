@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.constants.Constants;
+import com.rpggame.rpggame.system.SpriteManager;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -85,7 +86,7 @@ public class TileMapComp implements RenderingComp {
     }
 
     @Override
-    public void render(OrthographicCamera camera, SpriteBatch batch, Matrix3 transform) {
+    public void render(SpriteManager sprites, OrthographicCamera camera, SpriteBatch batch, Matrix3 transform) {
         if (this.renderer != null) {
             batch.end();
             Matrix4 transform4 = new Matrix4();

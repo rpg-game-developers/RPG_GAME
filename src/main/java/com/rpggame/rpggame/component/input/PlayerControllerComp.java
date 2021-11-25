@@ -57,6 +57,7 @@ public class PlayerControllerComp implements InputComp {
     public JsonObject toJson() {
         JsonObject playerControllerJson = new JsonObject();
         playerControllerJson.addProperty(Constants.JSON_KEYS.TYPE_STRING, this.getClass().getSimpleName());
+        playerControllerJson.addProperty(Constants.JSON_KEYS.SPEED_STRING, this.speed);
         return playerControllerJson;
     }
 

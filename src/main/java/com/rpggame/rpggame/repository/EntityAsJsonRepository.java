@@ -27,7 +27,7 @@ import java.io.FileReader;
 @NoArgsConstructor
 public class EntityAsJsonRepository {
 
-	public Entity loadEntity(JsonObject jsonObject) {
+	public static Entity loadEntity(JsonObject jsonObject) {
 		Entity mainEntity = new Entity();
 		JsonArray components = jsonObject.getAsJsonArray("components");
 		if(components.size() > 0) {
@@ -90,7 +90,7 @@ public class EntityAsJsonRepository {
 		return mainEntity;
 	}
 
-	public JsonObject loadJsonObjectFromFile(String filePath) {
+	public static JsonObject loadJsonObjectFromFile(String filePath) {
 		JsonParser jsonParser = new JsonParser();
 		try {
 			return (JsonObject) jsonParser.parse(new FileReader(filePath));
@@ -100,7 +100,7 @@ public class EntityAsJsonRepository {
 		}
 	}
 
-	public JsonObject saveEntityAsJson(@NotNull Entity entity) {
+	public static JsonObject saveEntityAsJson(@NotNull Entity entity) {
 		JsonObject entityAsJson = new JsonObject();
 		entityAsJson.add("extends", new JsonArray());
 		JsonArray entityComponents = new JsonArray();
@@ -116,7 +116,7 @@ public class EntityAsJsonRepository {
 		return entityAsJson;
 	}
 
-	public void writeToFile(@NotNull JsonObject json, String path, String fileName) {
+	public static void writeToFile(@NotNull JsonObject json, String path, String fileName) {
 		try {
 			Gdx.files.local(String.format("%s/%s.json", path, fileName)).writeString(json.toString(), false);
 		} catch (Exception e) {

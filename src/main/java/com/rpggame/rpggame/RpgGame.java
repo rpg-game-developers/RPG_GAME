@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.HealthComp;
 import com.rpggame.rpggame.component.NameComp;
 import com.rpggame.rpggame.component.ScriptComp;
@@ -14,11 +15,10 @@ import com.rpggame.rpggame.component.physics.collision.RectangleCollisionComp;
 import com.rpggame.rpggame.component.rendering.SpriteComp;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.gui.controller.LoginScreen;
+import com.rpggame.rpggame.repository.EntityAsJsonRepository;
 import com.rpggame.rpggame.system.*;
 
 public class RpgGame extends EntityApplicationAdapter {
-	private Texture player;
-	private Texture box;
 	private LoginScreen loginScreen;
 
 	private Entity entity;
@@ -27,12 +27,8 @@ public class RpgGame extends EntityApplicationAdapter {
 	public void create() {
 		super.create();
 
-		// load all assets
-		player = new Texture(Gdx.files.internal("alienPink_round.png"));
-		box = new Texture(Gdx.files.internal("boxCrate_double.png"));
-
 		// create entity world
-		entityWorld.addSystem(new RenderingSystem(camera, batch));
+		entityWorld.addSystem(new RenderingSystem(sprites, camera, batch));
 		entityWorld.addSystem(new PhysicsSystem());
 		entityWorld.addSystem(new InputSystem());
 		entityWorld.addSystem(new CollisionSystem());
@@ -41,7 +37,7 @@ public class RpgGame extends EntityApplicationAdapter {
 		// create first entity
 		entity = new Entity();
 		entity.addComponent(new NameComp("Player"));
-		entity.addComponent(new SpriteComp(player));
+		entity.addComponent(new SpriteComp("alienPink_round.png"));
 		entity.addComponent(new TransformComp(200, 150));
 		entity.addComponent(new VelocityComp(0, 0));
 		entity.addComponent(new PlayerControllerComp(4));
@@ -52,13 +48,16 @@ public class RpgGame extends EntityApplicationAdapter {
 		// create box
 		Entity entity2 = new Entity();
 		entity2.addComponent(new NameComp("Box"));
-		entity2.addComponent(new SpriteComp(box));
+		entity2.addComponent(new SpriteComp("boxCrate_double.png"));
 		entity2.addComponent(new TransformComp(400, 400));
 		entity2.addComponent(new RectangleCollisionComp(128, 128));
 		entity2.addComponent(new ScriptComp("scripts/test.js"));
 		entityWorld.getRoot().addChild(entity2);
 
 		loginScreen = new LoginScreen();
+
+		JsonObject json = EntityAsJsonRepository.saveEntityAsJson(entityWorld.getRoot());
+		EntityAsJsonRepository.writeToFile(json, "json/entity", "test");
 	}
 
 	@Override
@@ -77,7 +76,6 @@ public class RpgGame extends EntityApplicationAdapter {
 	@Override
 	public void dispose() {
 		super.dispose();
-		player.dispose();
 		batch.dispose();
 		loginScreen.dispose();
 	}

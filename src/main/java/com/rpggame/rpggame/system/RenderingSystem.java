@@ -8,12 +8,12 @@ import com.rpggame.rpggame.component.rendering.RenderingComp;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.entity.EntityFamily;
 
-public class RenderingEntitySystem extends EntitySystem {
+public class RenderingSystem extends EntitySystem {
 
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
+    protected OrthographicCamera camera;
+    protected SpriteBatch batch;
 
-    public RenderingEntitySystem(OrthographicCamera camera, SpriteBatch batch) {
+    public RenderingSystem(OrthographicCamera camera, SpriteBatch batch) {
         super(new EntityFamily(RenderingComp.class, TransformComp.class));
         this.camera = camera;
         this.batch = batch;
@@ -24,17 +24,7 @@ public class RenderingEntitySystem extends EntitySystem {
         batch.begin();
         for (Entity entity : getEntities()) {
             for (RenderingComp component : entity.getComponents(RenderingComp.class)) {
-                TransformComp transformComp = entity.getComponent(TransformComp.class);
-
-                Matrix3 transform = new Matrix3(transformComp.getMatrix());
-                Entity current = entity.getParent();
-                while (current != null) {
-                    if (current.hasComponent(TransformComp.class)) {
-                        transform.mulLeft(current.getComponent(TransformComp.class).getMatrix());
-                    }
-                    current = current.getParent();
-                }
-
+                Matrix3 transform = TransformComp.getCombinedMatrix(entity);
                 component.render(camera, batch, transform);
             }
         }

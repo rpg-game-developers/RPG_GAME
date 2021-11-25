@@ -1,10 +1,8 @@
 package com.rpggame.rpggame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.rpggame.rpggame.component.HealthComp;
 import com.rpggame.rpggame.component.NameComp;
@@ -15,16 +13,12 @@ import com.rpggame.rpggame.component.physics.VelocityComp;
 import com.rpggame.rpggame.component.physics.collision.RectangleCollisionComp;
 import com.rpggame.rpggame.component.rendering.SpriteComp;
 import com.rpggame.rpggame.entity.Entity;
-import com.rpggame.rpggame.entity.EntityObserver;
-import com.rpggame.rpggame.event.DeathEvent;
 import com.rpggame.rpggame.gui.controller.LoginScreen;
-import com.rpggame.rpggame.repository.EntityAsJsonRepository;
 import com.rpggame.rpggame.system.*;
 
 public class RpgGame extends EntityApplicationAdapter {
 	private Texture player;
 	private Texture box;
-	private SpriteBatch batch;
 	private LoginScreen loginScreen;
 
 	private Entity entity;
@@ -36,11 +30,10 @@ public class RpgGame extends EntityApplicationAdapter {
 		// load all assets
 		player = new Texture(Gdx.files.internal("alienPink_round.png"));
 		box = new Texture(Gdx.files.internal("boxCrate_double.png"));
-		batch = new SpriteBatch();
 
 		// create entity world
-		entityWorld.addSystem(new RenderingEntitySystem(camera, batch));
-		entityWorld.addSystem(new PhysicsEntitySystem());
+		entityWorld.addSystem(new RenderingSystem(camera, batch));
+		entityWorld.addSystem(new PhysicsSystem());
 		entityWorld.addSystem(new InputSystem());
 		entityWorld.addSystem(new CollisionSystem());
 		entityWorld.addSystem(new ScriptSystem());
@@ -64,17 +57,6 @@ public class RpgGame extends EntityApplicationAdapter {
 		entity2.addComponent(new RectangleCollisionComp(128, 128));
 		entity2.addComponent(new ScriptComp("scripts/test.js"));
 		entityWorld.getRoot().addChild(entity2);
-
-		// respawning when dead
-		entity.subscribe(entity, new EntityObserver<DeathEvent>() {
-			@Override
-			public void onNotify(DeathEvent event) {
-				this.entity.getComponent(TransformComp.class)
-						.setPosition(new Vector2(0.0f, 0.0f));
-				this.entity.getComponent(HealthComp.class)
-						.resetHealth();
-			}
-		});
 
 		loginScreen = new LoginScreen();
 	}

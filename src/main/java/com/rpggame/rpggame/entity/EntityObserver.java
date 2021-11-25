@@ -4,12 +4,16 @@ import java.lang.reflect.ParameterizedType;
 
 public abstract class EntityObserver<T> {
 
-    protected Entity entity;
-    protected Entity subject;
+    public Entity entity;
+    public Entity subject;
     private Class<T> type;
 
     public EntityObserver() {
         this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
+
+    public EntityObserver(Class<T> type) {
+        this.type = type;
     }
 
     public Class<T> getType() {

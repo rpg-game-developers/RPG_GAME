@@ -1,5 +1,6 @@
 package com.rpggame.rpggame.component.rendering;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix3;
+import com.badlogic.gdx.math.Matrix4;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.constants.Constants;
@@ -60,26 +62,36 @@ public class TileMapComp implements RenderingComp {
         return splitTiles;
     }
 
-    public int getRows() {
+    public int getSheetRows() {
         if (splitTiles != null) {
             return splitTiles.length;
         }
         return 0;
     }
 
-    public int getColumns() {
+    public int getSheetColumns() {
         if(splitTiles != null) {
             return splitTiles[0].length;
         }
         return 0;
     }
 
+    public int getRows() {
+        return 150;
+    }
+
+    public int getColumns() {
+        return 150;
+    }
+
     @Override
     public void render(OrthographicCamera camera, SpriteBatch batch, Matrix3 transform) {
         if (this.renderer != null) {
             batch.end();
-            camera.update();
-            renderer.setView(camera);
+            Matrix4 transform4 = new Matrix4();
+            transform4.set(transform);
+            transform4.mulLeft(camera.combined);
+            renderer.setView(transform4, 0.0f, 0.0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             renderer.render();
             batch.begin();
         }

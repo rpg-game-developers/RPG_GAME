@@ -54,14 +54,24 @@ public class Entity implements Comparable<Entity> {
      * @param world  the new world
      */
     public void setWorld(EntityWorld world) {
-        if (this.world == world)
-            return;
+        if (this.world != null) {
+            for (EntitySystem system : this.world.getSystems()) {
+                system.onEntityRemoved(this);
+            }
+        }
 
         this.world = world;
         Entity currentChild = this.firstChild;
         while (currentChild != null) {
             currentChild.setWorld(this.world);
             currentChild = currentChild.next;
+        }
+
+        if (this.world != null) {
+            this.world.updateEntityIndex();
+            for (EntitySystem system : this.world.getSystems()) {
+                system.onNewEntityAdded(this);
+            }
         }
     }
 
@@ -73,8 +83,8 @@ public class Entity implements Comparable<Entity> {
      * @param entity  The child entity
      */
     public void addChild(Entity entity) {
+        entity.setWorld(null);
         entity.disconnectFromParent();
-        entity.setWorld(this.world);
         entity.parent = this;
 
         if (this.lastChild == null) {
@@ -85,14 +95,7 @@ public class Entity implements Comparable<Entity> {
         }
         this.lastChild = entity;
 
-        entity.indexNumber = this.indexNumber + 1;
-
-        if (this.world != null) {
-            this.world.updateEntityIndex();
-            for (EntitySystem system : this.world.getSystems()) {
-                system.onNewEntityAdded(entity);
-            }
-        }
+        entity.setWorld(this.world);
     }
 
     /**
@@ -104,8 +107,8 @@ public class Entity implements Comparable<Entity> {
      * @param entity  the entity that will go before this entity
      */
     public void addPrev(Entity entity) {
+        entity.setWorld(null);
         entity.disconnectFromParent();
-        entity.setWorld(this.world);
         entity.parent = this.parent;
         entity.next = this;
         entity.prev = this.prev;
@@ -120,14 +123,7 @@ public class Entity implements Comparable<Entity> {
             this.parent.firstChild = entity;
         }
 
-        entity.indexNumber = this.indexNumber + 1;
-
-        if (this.world != null) {
-            this.world.updateEntityIndex();
-            for (EntitySystem system : this.world.getSystems()) {
-                system.onNewEntityAdded(entity);
-            }
-        }
+        entity.setWorld(this.world);
     }
 
     /**
@@ -139,8 +135,8 @@ public class Entity implements Comparable<Entity> {
      * @param entity  the entity that will go after this entity
      */
     public void addNext(Entity entity) {
+        entity.setWorld(null);
         entity.disconnectFromParent();
-        entity.setWorld(this.world);
         entity.parent = this.parent;
         entity.next = this.next;
         entity.prev = this;
@@ -155,14 +151,7 @@ public class Entity implements Comparable<Entity> {
             this.parent.lastChild = entity;
         }
 
-        entity.indexNumber = this.indexNumber + 1;
-
-        if (this.world != null) {
-            this.world.updateEntityIndex();
-            for (EntitySystem system : this.world.getSystems()) {
-                system.onNewEntityAdded(entity);
-            }
-        }
+        entity.setWorld(this.world);
     }
 
     /**
@@ -171,6 +160,8 @@ public class Entity implements Comparable<Entity> {
      * It automatically removes the entity from the applied systems.
      */
     public void destroy() {
+        setWorld(null);
+
         Entity curChild = this.firstChild;
         while (curChild != null) {
             Entity nextChild = curChild.next;
@@ -178,9 +169,6 @@ public class Entity implements Comparable<Entity> {
             curChild = nextChild;
         }
 
-        for (EntitySystem system : this.world.getSystems()) {
-            system.onEntityRemoved(this);
-        }
 
         disconnectFromParent();
 
@@ -357,6 +345,15 @@ public class Entity implements Comparable<Entity> {
         observer.setConnection(this, subject);
         observers.add(observer);
         Class<T> type = observer.getType();
+        if (!subject.subjects.containsKey(type)) {
+            subject.subjects.put(type, new EntitySubject<T>());
+        }
+        EntitySubject<T> entitySubject = (EntitySubject<T>) subject.subjects.get(type);
+        entitySubject.subscribe(observer);
+    }
+    public <T> void subscribe(Class<T> type, Entity subject, EntityObserver<T> observer) {
+        observer.setConnection(this, subject);
+        observers.add(observer);
         if (!subject.subjects.containsKey(type)) {
             subject.subjects.put(type, new EntitySubject<T>());
         }

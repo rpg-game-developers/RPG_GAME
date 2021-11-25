@@ -1,6 +1,7 @@
 package com.rpggame.rpggame.system;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.controller.ConnectedObserver;
 import com.rpggame.rpggame.entity.Entity;
@@ -14,7 +15,7 @@ import java.util.*;
 public class EntitySystem implements InputProcessor {
     private final List<ConnectedObserver<?>> observers;
     private final EntityFamily family;
-    private Set<Entity> entities;
+    private TreeSet<Entity> entities;
     private EntityWorld world;
 
     public EntitySystem(EntityFamily family) {
@@ -74,8 +75,8 @@ public class EntitySystem implements InputProcessor {
      *
      * @return  An unmodifiable list of all the interesting entities.
      */
-    public Set<Entity> getEntities() {
-        return Collections.unmodifiableSet(entities);
+    public TreeSet<Entity> getEntities() {
+        return entities;
     }
 
     /**

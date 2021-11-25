@@ -6,9 +6,9 @@ import com.rpggame.rpggame.component.physics.collision.CollisionComp;
 import com.rpggame.rpggame.entity.Entity;
 import com.rpggame.rpggame.entity.EntityFamily;
 
-public class PhysicsEntitySystem extends EntitySystem {
+public class PhysicsSystem extends EntitySystem {
 
-    public PhysicsEntitySystem() {
+    public PhysicsSystem() {
         super(new EntityFamily(TransformComp.class, VelocityComp.class));
     }
 

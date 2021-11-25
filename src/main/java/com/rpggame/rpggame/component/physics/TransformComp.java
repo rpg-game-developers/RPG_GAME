@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.google.gson.JsonObject;
 import com.rpggame.rpggame.component.Component;
 import com.rpggame.rpggame.constants.Constants;
+import com.rpggame.rpggame.entity.Entity;
 
 public class TransformComp implements Component {
     private final Vector2 position;
@@ -76,6 +77,18 @@ public class TransformComp implements Component {
                 .setToTranslation(this.position)
                 .rotateRad(this.rotation)
                 .scale(this.scale);
+    }
+
+    public static Matrix3 getCombinedMatrix(Entity entity) {
+        Matrix3 result = entity.getComponent(TransformComp.class).getMatrix();
+        entity = entity.getParent();
+        while (entity != null) {
+            if (entity.hasComponent(TransformComp.class)) {
+                result.mulLeft(entity.getComponent(TransformComp.class).getMatrix());
+            }
+            entity = entity.getParent();
+        }
+        return result;
     }
 
     @Override

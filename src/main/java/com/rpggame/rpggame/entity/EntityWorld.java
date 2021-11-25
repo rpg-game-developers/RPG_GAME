@@ -17,11 +17,11 @@ public class EntityWorld implements InputProcessor {
     private Map<Class<?>, Subject<RemoveComponentEvent>> removeComponentSubjects;
 
     public EntityWorld() {
-        this.root = new Entity();
-        this.root.setWorld(this);
-        this.entitySystems = new ArrayList<>();
         this.addComponentSubjects = new HashMap<>();
         this.removeComponentSubjects = new HashMap<>();
+        this.entitySystems = new ArrayList<>();
+        this.root = new Entity();
+        this.root.setWorld(this);
     }
 
     /**
